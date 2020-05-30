@@ -22,5 +22,6 @@
   "bugs": {
     "url": "https://github.com/andreciornavei/aws-cms-serverless/issues"
   },
-  "homepage": "https://github.com/andreciornavei/aws-cms-serverless#readme"
+  "homepage": "https://github.com/andreciornavei/aws-cms-serverless#readme",
+  "dependencies": {}
 }
