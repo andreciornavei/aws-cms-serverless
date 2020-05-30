@@ -82,9 +82,26 @@ For this project we going to use the [AWS](https://www.terraform.io/docs/provide
 
 ## 2 - Deploying everything
 
-### 2.1 - Deploy lambda functions with Serverless
+### 2.1 - Deploying our database structure with Sequelize
 
-To deploy all the lambda functions located at `src` folder, you just need to run the command below, and you're done.
+_2.1.1 Run this command to create the database on server._
+```bash
+$ npx sequelize db:create
+```
+_2.1.2 Run this command to create all tables in database._
+```bash
+$ npx sequelize db:migrate
+```
+_2.1.3 Run this command to create default records on database tables._
+```bash
+$ npx sequelize db:seed:all
+```
+
+--- 
+
+### 2.2 - Deploy lambda functions with Serverless
+
+To deploy all the lambda functions located at `src/lambda` folder, you just need to run the command below, and you're done.
 
 ```bash
 $ serverless deploy -v
@@ -93,8 +110,8 @@ _With it, all the source code that will represents our API will be online to be 
 
 ---
 
-### 2.2 - Deploy the infrastructure to AWS with Terraform
-_1 - initialize the terraform in his project to download all aws plugins needed to work:_
+### 2.3 - Deploy the infrastructure to AWS with Terraform
+_1 - initialize the terraform in this project to download all aws plugins needed to work:_
 ```bash
 terraform init
 ```

@@ -7,8 +7,18 @@ provider:
   memorySize: 256
         
 functions:
-  helloworld:
-    handler: src/lambda/helloworld.handle
+  status:
+    handler: src/lambda/hello.handle
+    events:
+      - http:
+          path: /
+          method: get
+  create_user:
+    handler: src/lambda/users.create
+    events:
+      - http:
+          path: users
+          method: post
 
 plugins:
   - serverless-offline
