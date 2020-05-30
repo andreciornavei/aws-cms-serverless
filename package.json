@@ -1,0 +1,26 @@
+{
+  "name": "aws-cms-serverless",
+  "version": "1.0.0",
+  "description": "This project implements a serverless backend for a simple cms management.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andreciornavei/aws-cms-serverless.git"
+  },
+  "keywords": [
+    "Aws",
+    "Serverless",
+    "Terraform",
+    "Cms",
+    "Nodejs"
+  ],
+  "author": "André Ciornavei <andre.ciornavei@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/andreciornavei/aws-cms-serverless/issues"
+  },
+  "homepage": "https://github.com/andreciornavei/aws-cms-serverless#readme"
+}
