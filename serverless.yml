@@ -5,7 +5,12 @@ provider:
   runtime: nodejs10.x
   region: sa-east-1
   memorySize: 256
-        
+
+custom:
+  middleware:
+    folderName: .middleware
+    cleanFolder: false
+
 functions:
   status:
     handler: src/lambda/hello.handle
@@ -20,13 +25,17 @@ functions:
           path: /login
           method: post
   list_users:
-    handler: src/lambda/users.index
+    handler: 
+      - src/lambda/session.auth
+      - src/lambda/users.index
     events:
       - http:
           path: /users
           method: get
   create_user:
-    handler: src/lambda/users.store
+    handler: 
+      - src/lambda/session.auth
+      - src/lambda/users.store
     events:
       - http:
           path: /users
@@ -34,3 +43,4 @@ functions:
 
 plugins:
   - serverless-offline
+  - serverless-middleware

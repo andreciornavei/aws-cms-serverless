@@ -34,3 +34,19 @@ module.exports.login = async (event) => {
     ),
   };
 };
+
+
+
+module.exports.auth = async (event, context) => {
+  context.end();
+  return {
+    statusCode: 401,
+    body: JSON.stringify(
+      {
+        message: "You have no permission to access this route",
+      },
+      null,
+      2
+    ),
+  };
+};
