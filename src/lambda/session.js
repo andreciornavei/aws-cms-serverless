@@ -1,5 +1,8 @@
 "use strict";
 
+const jwt = require("jsonwebtoken");
+const { promisify } = require("util");
+
 const { User } = require("./../app/models");
 module.exports.login = async (event) => {
   let body = {};
@@ -27,7 +30,7 @@ module.exports.login = async (event) => {
     body: JSON.stringify(
       {
         user: user,
-        token: user.generateToken()
+        token: user.generateToken(),
       },
       null,
       2
@@ -35,18 +38,41 @@ module.exports.login = async (event) => {
   };
 };
 
-
-
 module.exports.auth = async (event, context) => {
-  context.end();
-  return {
-    statusCode: 401,
-    body: JSON.stringify(
-      {
-        message: "You have no permission to access this route",
-      },
-      null,
-      2
-    ),
-  };
+  const authHeader =
+    (event.headers && event.headers.Authorization) || undefined;
+
+  if (!authHeader) {
+    context.end();
+    return {
+      statusCode: 500,
+      body: JSON.stringify(
+        {
+          message: "Token not provided",
+        },
+        null,
+        2
+      ),
+    };
+  }
+
+  const [, token] = authHeader.split(" ");
+
+  try {
+    const decoded = await promisify(jwt.verify)(token, process.env.APP_SECRET);
+    return { statusCode: 200 };
+  } catch (err) {
+    console.log(err);
+    context.end();
+    return {
+      statusCode: 500,
+      body: JSON.stringify(
+        {
+          message: "Invalid token",
+        },
+        null,
+        2
+      ),
+    };
+  }
 };
