@@ -4,7 +4,8 @@
   "description": "This project implements a serverless backend for a simple cms management.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "sequelize": "npx sequelize"
   },
   "repository": {
     "type": "git",
@@ -23,5 +24,12 @@
     "url": "https://github.com/andreciornavei/aws-cms-serverless/issues"
   },
   "homepage": "https://github.com/andreciornavei/aws-cms-serverless#readme",
-  "dependencies": {}
+  "dependencies": {
+    "mysql2": "^2.1.0",
+    "sequelize": "^5.21.11"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^5.5.1",
+    "serverless-offline": "^6.3.0"
+  }
 }

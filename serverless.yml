@@ -8,4 +8,7 @@ provider:
         
 functions:
   helloworld:
-    handler: src/helloworld.handle
+    handler: src/lambda/helloworld.handle
+
+plugins:
+  - serverless-offline

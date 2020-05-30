@@ -20,6 +20,12 @@ This project is intended to guide you step by step to deploy this serverless app
 
 In the first of all, this project was developed using node.js and npm (node package manager), so you have to make sure to have this installed and configured in your environment.
 
+_After install `node.js` and `npm`, run the code below to initialize the package and install all dependencies for this project:_
+
+```bash
+$ npm install
+```
+
 For more documentation about npm, see [this link](https://www.npmjs.com/get-npm.).
 
 ---
@@ -102,3 +108,20 @@ terraform apply
 ```
 
 ---
+
+## 3 - Testing
+
+### 3.1 - Invoke your functions locally
+For test your lambda functions without an endpoint API, you can invoke it functions using `serverless invoke local`, like code below where `helloworld` is yours function name:
+
+```bash
+$ serverless invoke local -f helloworld -l
+```
+--- 
+
+### 3.2 - serverless-offline
+For this section we going to test the serverless lambda functions offline as a endpoint API, it should be a good pratice to test the project during development, so run the command below to start the serverless offline:
+
+```bash
+$ npx serverless offline
+```
