@@ -8,3 +8,9 @@ jspm_packages
 
 # Terraform directories
 .terraform
+
+# Jest reports
+/tests/coverage/*
+
+# Test database (sqlite) file
+/tests/database.sqlite

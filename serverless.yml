@@ -13,11 +13,23 @@ functions:
       - http:
           path: /
           method: get
-  create_user:
-    handler: src/lambda/users.create
+  login:
+    handler: src/lambda/session.login
     events:
       - http:
-          path: users
+          path: /login
+          method: post
+  list_users:
+    handler: src/lambda/users.index
+    events:
+      - http:
+          path: /users
+          method: get
+  create_user:
+    handler: src/lambda/users.store
+    events:
+      - http:
+          path: /users
           method: post
 
 plugins:
