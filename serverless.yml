@@ -7,6 +7,10 @@ provider:
   memorySize: 256
 
 custom:
+  serverless-offline:
+    printOutput: false
+    host: localhost
+    httpPort: 4000
   middleware:
     folderName: .middleware
     cleanFolder: false
@@ -24,22 +28,50 @@ functions:
       - http:
           path: /login
           method: post
-  list_users:
-    handler: 
-      - src/lambda/session.auth
-      - src/lambda/users.index
-    events:
-      - http:
-          path: /users
-          method: get
   create_user:
     handler: 
       - src/lambda/session.auth
       - src/lambda/users.store
     events:
       - http:
-          path: /users
+          path: /user
           method: post
+  create_post:
+    handler:
+      - src/lambda/session.auth
+      - src/lambda/posts.store
+    events:
+      - http:
+          path: /cms/posts
+          method: post
+  update_post:
+    handler:
+      - src/lambda/session.auth
+      - src/lambda/posts.update
+    events:
+      - http:
+          path: /cms/posts
+          method: put
+  delete_post:
+    handler:
+      - src/lambda/session.auth
+      - src/lambda/posts.destroy
+    events:
+      - http:
+          path: /cms/posts
+          method: delete
+  list_post:
+    handler: src/lambda/posts.index
+    events:
+      - http:
+          path: /cms/all_posts
+          method: get
+  get_post:
+    handler: src/lambda/posts.show
+    events:
+      - http:
+          path: /cms/posts
+          method: get
 
 plugins:
   - serverless-offline

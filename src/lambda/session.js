@@ -59,10 +59,19 @@ module.exports.auth = async (event, context) => {
   const [, token] = authHeader.split(" ");
 
   try {
-    const decoded = await promisify(jwt.verify)(token, process.env.APP_SECRET);
-    return { statusCode: 200 };
+    const payload = await promisify(jwt.verify)(token, process.env.APP_SECRET);
+    const user = await User.findOne({ where: { id: payload.id } });
+    if (!user) {
+      context.end();
+      return {
+        statusCode: 500,
+        message: "The user was not founded fot this token",
+      };
+    } else {
+      context.auth = user;
+      return { statusCode: 201 };
+    }
   } catch (err) {
-    console.log(err);
     context.end();
     return {
       statusCode: 500,
