@@ -4,7 +4,8 @@
   "description": "This project implements a serverless backend for a simple cms management.",
   "main": "index.js",
   "scripts": {
-    "test": "concurrently \"NODE_ENV=test serverless offline start\" \"wait-on http://localhost:4000/dev && NODE_ENV=test sequelize db:migrate:undo:all && NODE_ENV=test sequelize db:migrate && NODE_ENV=test jest && NODE_ENV=test sequelize db:migrate:undo:all\""
+    "test": "concurrently \"NODE_ENV=test serverless offline start\" \"wait-on http://localhost:4000/dev && NODE_ENV=test sequelize db:migrate:undo:all && NODE_ENV=test sequelize db:migrate && NODE_ENV=test sequelize db:seed:all && NODE_ENV=test jest && NODE_ENV=test sequelize db:migrate:undo:all\"",
+    "developer": "NODE_ENV=dev sequelize db:create && NODE_ENV=dev sequelize db:migrate:undo:all && NODE_ENV=dev sequelize db:migrate && NODE_ENV=dev sequelize db:seed:all"
   },
   "repository": {
     "type": "git",

@@ -46,13 +46,9 @@ module.exports.auth = async (event, context) => {
     context.end();
     return {
       statusCode: 403,
-      body: JSON.stringify(
-        {
-          message: "Token not provided",
-        },
-        null,
-        2
-      ),
+      body: JSON.stringify({
+        message: "Token not provided",
+      }),
     };
   }
 
@@ -62,15 +58,16 @@ module.exports.auth = async (event, context) => {
     const payload = await promisify(jwt.verify)(token, process.env.APP_SECRET);
     const user = await User.findOne({ where: { id: payload.id } });
     if (!user) {
-
       const users = await User.findAll();
-      console.log("ALL USERS =", users)
+      console.log("ALL USERS =", users);
 
       context.end();
       return {
         statusCode: 403,
         body: JSON.stringify({
-          message: `The user was not founded for this payload token authorization = ${JSON.stringify(payload)} at auth middleware`,
+          message: `The user was not founded for this payload token authorization = ${JSON.stringify(
+            payload
+          )} at auth middleware`,
         }),
       };
     } else {
