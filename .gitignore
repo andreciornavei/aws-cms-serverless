@@ -2,9 +2,6 @@
 node_modules
 jspm_packages
 
-# Aws directories
-.aws
-
 # Serverless directories
 .serverless/*
 .middleware/*

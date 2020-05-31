@@ -1,7 +1,7 @@
 provider "aws" {
     region = "sa-east-1"
-    shared_credentials_file = "./.aws/credentials"
-    profile = "aws-cms-serverless"
+    shared_credentials_file = "~/.aws/credentials"
+    profile = "default"
 }
 
 resource "aws_sqs_queue" "aws-cms-serverless-queue" {

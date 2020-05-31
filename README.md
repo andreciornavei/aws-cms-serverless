@@ -36,7 +36,22 @@ You will need to generate IAM credentials at AWS Panel to access it programmatic
 
 _Make sure to allow `Programmatic access` and provide `AdministratorAccess` to this user for Serverless and Terraform be able to manage this infrastructure_
 
-For more documentation about IAM, see [this link](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html).
+For more documentation about IAM creation, see [this link](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/getting-your-credentials.html).
+
+Now, this project uses shared credentials file to get access of your IAM credentials. Where you keep the shared credentials file depends on your operating system:
+
+* The shared credentials file on Linux, Unix, and macOS: `~/.aws/credentials`
+* The shared credentials file on Windows: `C:\Users\USER_NAME\.aws\credentials`
+
+_So, after generate your credential file, put it inside your aws shared credentials file_
+
+Once you follow those instructions, you should see text similar to the following in the credentials file, where `<YOUR_ACCESS_KEY_ID>` is your access key ID and `<YOUR_SECRET_ACCESS_KEY>` is your secret access key:
+
+```txt
+[default]
+aws_access_key_id = <YOUR_ACCESS_KEY_ID>
+aws_secret_access_key = <YOUR_SECRET_ACCESS_KEY>
+```
 
 ---
 
@@ -50,7 +65,7 @@ $ npm install -g serverless
 
 Installing it globally you will get access to serverless cli.
 
-After install serverless make sure to setup your aws credentials with command:
+After install serverless make sure to setup your aws credentials with command below (_just for security_):
 
 ```bash
 $ serverless config credentials -o --provider aws -key=<YOUR_AWS_ACCESS_KEY> --secret=<YOUR_AWS_SECRET_ACCESS_KEY>
@@ -79,6 +94,8 @@ Usage: terraform [--version] [--help] <command> [args]
 For more knowledge about terraform, check the [TERRAFORM.md](./TERRAFORM.md) as a fast documentation.
 
 For this project we going to use the [AWS](https://www.terraform.io/docs/providers/aws/index.html) provider.
+
+On the final step, access the terraform.tf file and make sure that the value of provider `aws.shared_credentials_file` is the same of yours OS system, this is setted for _Linux, Unix, and macOS_ by default.
 
 ---
 

@@ -5,7 +5,7 @@ AWS.config.update({ region: "sa-east-1" });
 
 if (process.env.NODE_ENV == "test" || process.env.NODE_ENV == "dev") {
   var credentials = new AWS.SharedIniFileCredentials({
-    profile: "aws-cms-serverless",
+    profile: "default",
   });
   AWS.config.credentials = credentials;
 }
