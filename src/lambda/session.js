@@ -45,7 +45,7 @@ module.exports.auth = async (event, context) => {
   if (!authHeader) {
     context.end();
     return {
-      statusCode: 500,
+      statusCode: 403,
       body: JSON.stringify(
         {
           message: "Token not provided",
@@ -62,10 +62,16 @@ module.exports.auth = async (event, context) => {
     const payload = await promisify(jwt.verify)(token, process.env.APP_SECRET);
     const user = await User.findOne({ where: { id: payload.id } });
     if (!user) {
+
+      const users = await User.findAll();
+      console.log("ALL USERS =", users)
+
       context.end();
       return {
-        statusCode: 500,
-        message: "The user was not founded fot this token",
+        statusCode: 403,
+        body: JSON.stringify({
+          message: `The user was not founded for this payload token authorization = ${JSON.stringify(payload)} at auth middleware`,
+        }),
       };
     } else {
       context.auth = user;
@@ -74,14 +80,10 @@ module.exports.auth = async (event, context) => {
   } catch (err) {
     context.end();
     return {
-      statusCode: 500,
-      body: JSON.stringify(
-        {
-          message: "Invalid token",
-        },
-        null,
-        2
-      ),
+      statusCode: 403,
+      body: JSON.stringify({
+        message: "Invalid token",
+      }),
     };
   }
 };

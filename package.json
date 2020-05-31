@@ -33,6 +33,7 @@
     "yup": "^0.29.1"
   },
   "devDependencies": {
+    "aws-sdk": "^2.686.0",
     "concurrently": "^5.2.0",
     "jest": "^26.0.1",
     "sequelize-cli": "^5.5.1",

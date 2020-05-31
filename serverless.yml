@@ -36,22 +36,6 @@ functions:
       - http:
           path: /user
           method: post
-  create_post:
-    handler:
-      - src/lambda/session.auth
-      - src/lambda/posts.store
-    events:
-      - http:
-          path: /cms/posts
-          method: post
-  update_post:
-    handler:
-      - src/lambda/session.auth
-      - src/lambda/posts.update
-    events:
-      - http:
-          path: /cms/posts
-          method: put
   delete_post:
     handler:
       - src/lambda/session.auth
@@ -72,6 +56,28 @@ functions:
       - http:
           path: /cms/posts
           method: get
+  update_post:
+    handler:
+      - src/lambda/session.auth
+      - src/lambda/posts.update
+    events:
+      - http:
+          path: /cms/posts
+          method: put
+  create_post:
+    handler:
+      - src/lambda/session.auth
+      - src/lambda/posts.store
+    events:
+      - http:
+          path: /cms/posts
+          method: post
+  sqs_create_post:
+    handler: src/lambda/sqs_posts.store
+    events:
+      - sqs:
+          arn: arn:aws:sqs:sa-east-1:750813453023:aws-cms-serverless-queue
+          batchSize: 1
 
 plugins:
   - serverless-offline

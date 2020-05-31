@@ -33,6 +33,11 @@ describe("Authentication", () => {
     const response = await request(process.env.API_ENDPOINT)
       .post("/login")
       .send(user.dataValues);
+
+    if (!response.body.token) {
+      console.log(response.body);
+    }
+
     expect(response.body).toHaveProperty("token");
   });
 

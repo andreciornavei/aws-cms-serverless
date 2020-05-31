@@ -1,5 +1,9 @@
 "use strict";
 
+const AWS = require("aws-sdk");
+AWS.config.update({ region: "sa-east-1" });
+const sqs = new AWS.SQS({ apiVersion: "2012-11-05" });
+
 const { Post } = require("./../app/models");
 
 module.exports.index = async (event) => {
@@ -41,27 +45,33 @@ module.exports.show = async (event) => {
 
 module.exports.store = async (event, { auth }) => {
   const body = JSON.parse(event.body);
-  const post = await Post.create({
+  const messageData = {
     title: body.title,
     subtitle: body.subtitle,
     content: body.content,
     img_url: body.img_url || "",
     author: auth.dataValues.username,
-  });
+  };
 
-  if (!post) {
+  try {
+    await sqs.sendMessage({
+      MessageBody: JSON.stringify(messageData),
+      QueueUrl: process.env.SQS_URL,
+    });
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        message: "Message was added to queue",
+      }),
+    };
+  } catch (error) {
     return {
       statusCode: 500,
       body: JSON.stringify({
-        message: "Was not possible to create a new post",
+        message: "Was not possible to add this message to queue",
       }),
     };
   }
-
-  return {
-    statusCode: 200,
-    body: JSON.stringify(post),
-  };
 };
 
 module.exports.update = async (event, { auth }) => {

@@ -1,7 +1,9 @@
 # package directories
 node_modules
 jspm_packages
-.mycredentials
+
+# Aws directories
+.aws
 
 # Serverless directories
 .serverless/*
@@ -15,3 +17,5 @@ jspm_packages
 
 # Test database (sqlite) file
 /tests/database.sqlite
+
+.env

@@ -14,6 +14,9 @@ describe("Users", () => {
     const response = await request(process.env.API_ENDPOINT)
       .post("/user")
       .set("Authorization", `Bearer ${user.generateToken()}`);
+    if (response.status != 200) {
+      console.log(response.body);
+    }
     expect(response.status).toBe(200);
   });
 });

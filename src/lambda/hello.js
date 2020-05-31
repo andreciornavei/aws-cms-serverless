@@ -5,7 +5,6 @@ module.exports.handle = async (event) => {
     statusCode: 200,
     body: JSON.stringify({
       message: "Serverless is running!",
-      input: event,
     }),
   };
 };
