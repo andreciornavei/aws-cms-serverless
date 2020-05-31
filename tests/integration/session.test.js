@@ -1,14 +1,9 @@
 const request = require("supertest");
-const truncate = require("../utils/truncate");
 require("dotenv").config({ path: ".env.test" });
 
 const factory = require("../factories");
 
 describe("Authentication", () => {
-  beforeEach(async () => {
-    //await truncate();
-  });
-
   it("should authenticate with valid credentials", async () => {
     const user = await factory.create("User");
     const response = await request(process.env.API_ENDPOINT)

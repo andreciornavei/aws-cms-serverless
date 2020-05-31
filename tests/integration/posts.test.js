@@ -1,14 +1,9 @@
 const request = require("supertest");
-const truncate = require("../utils/truncate");
 require("dotenv").config({ path: ".env.test" });
 
 const factory = require("../factories");
 
 describe("Posts", () => {
-  beforeEach(async () => {
-    //await truncate();
-  });
-
   it("should be able to list all registered posts", async () => {
     await factory.createMany("Post", 5);
     const response = await request(process.env.API_ENDPOINT).get(

@@ -4,7 +4,7 @@ const AWS = require("aws-sdk");
 AWS.config.update({ region: "sa-east-1" });
 const sqs = new AWS.SQS({ apiVersion: "2012-11-05" });
 
-const { Post } = require("./../app/models");
+const { Post } = require("./../models");
 
 module.exports.index = async (event) => {
   const posts = await Post.findAll({ where: { deleted: false } });

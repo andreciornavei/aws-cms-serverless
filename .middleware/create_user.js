@@ -1,7 +1,7 @@
 'use strict';
     
-const src_lambda_session = require('../src/lambda/session');
-const src_lambda_users = require('../src/lambda/users');
+const src_app_controllers_session = require('../src/app/controllers/session');
+const src_app_controllers_users = require('../src/app/controllers/users');
 
 module.exports.handler = async (event, context) => {
   let end = false;
@@ -14,6 +14,6 @@ module.exports.handler = async (event, context) => {
   };
 
   return Promise.resolve()
-    .then(wrappedHandler(src_lambda_session.auth.bind(src_lambda_session)))
-    .then(wrappedHandler(src_lambda_users.store.bind(src_lambda_users)));
+    .then(wrappedHandler(src_app_controllers_session.auth.bind(src_app_controllers_session)))
+    .then(wrappedHandler(src_app_controllers_users.store.bind(src_app_controllers_users)));
 };

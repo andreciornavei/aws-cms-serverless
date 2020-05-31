@@ -1,19 +1,18 @@
 const request = require("supertest");
-const truncate = require("../utils/truncate");
 require("dotenv").config({ path: ".env.test" });
 
 const factory = require("../factories");
+const { User } = require("../../src/app/models")
 
 describe("Users", () => {
-  beforeEach(async () => {
-    //await truncate();
-  });
-
   it("should be able to create a new user", async () => {
-    const user = await factory.create("User");
+    //retrieve admin created on seeder
+    const admin = await User.findOne({ where: { username: "admin" } });
+    const newuser = await factory.build("User");
     const response = await request(process.env.API_ENDPOINT)
       .post("/user")
-      .set("Authorization", `Bearer ${user.generateToken()}`);
+      .set("Authorization", `Bearer ${admin.generateToken()}`)
+      .send(newuser.dataValues);
     if (response.status != 200) {
       console.log(response.body);
     }

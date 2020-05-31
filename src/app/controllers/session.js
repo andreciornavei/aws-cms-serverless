@@ -3,7 +3,7 @@
 const jwt = require("jsonwebtoken");
 const { promisify } = require("util");
 
-const { User } = require("./../app/models");
+const { User } = require("./../models");
 module.exports.login = async (event) => {
   let body = {};
   if (event.body !== null && event.body !== undefined) {
@@ -20,21 +20,17 @@ module.exports.login = async (event) => {
     return {
       statusCode: 500,
       body: JSON.stringify({
-        message: "Username or password invalid",
+        message: "username or password invalid",
+        token: null
       }),
     };
   }
 
   return {
     statusCode: 200,
-    body: JSON.stringify(
-      {
-        user: user,
-        token: user.generateToken(),
-      },
-      null,
-      2
-    ),
+    body: JSON.stringify({
+      token: user.generateToken(),
+    }),
   };
 };
 

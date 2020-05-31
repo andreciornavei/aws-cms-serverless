@@ -17,63 +17,63 @@ custom:
 
 functions:
   status:
-    handler: src/lambda/hello.handle
+    handler: src/app/controllers/hello.handle
     events:
       - http:
           path: /
           method: get
   login:
-    handler: src/lambda/session.login
+    handler: src/app/controllers/session.login
     events:
       - http:
           path: /login
           method: post
   create_user:
     handler: 
-      - src/lambda/session.auth
-      - src/lambda/users.store
+      - src/app/controllers/session.auth
+      - src/app/controllers/users.store
     events:
       - http:
           path: /user
           method: post
   delete_post:
     handler:
-      - src/lambda/session.auth
-      - src/lambda/posts.destroy
+      - src/app/controllers/session.auth
+      - src/app/controllers/posts.destroy
     events:
       - http:
           path: /cms/posts
           method: delete
   list_post:
-    handler: src/lambda/posts.index
+    handler: src/app/controllers/posts.index
     events:
       - http:
           path: /cms/all_posts
           method: get
   get_post:
-    handler: src/lambda/posts.show
+    handler: src/app/controllers/posts.show
     events:
       - http:
           path: /cms/posts
           method: get
   update_post:
     handler:
-      - src/lambda/session.auth
-      - src/lambda/posts.update
+      - src/app/controllers/session.auth
+      - src/app/controllers/posts.update
     events:
       - http:
           path: /cms/posts
           method: put
   create_post:
     handler:
-      - src/lambda/session.auth
-      - src/lambda/posts.store
+      - src/app/controllers/session.auth
+      - src/app/controllers/posts.store
     events:
       - http:
           path: /cms/posts
           method: post
   sqs_create_post:
-    handler: src/lambda/sqs_posts.store
+    handler: src/app/controllers/sqs_posts.store
     events:
       - sqs:
           arn: arn:aws:sqs:sa-east-1:750813453023:aws-cms-serverless-queue
