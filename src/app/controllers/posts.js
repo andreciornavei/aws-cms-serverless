@@ -50,7 +50,9 @@ module.exports.show = async (event) => {
 };
 
 module.exports.store = async (event, { auth }) => {
+  
   const body = JSON.parse(event.body);
+
   const messageData = {
     title: body.title,
     subtitle: body.subtitle,
@@ -83,7 +85,18 @@ module.exports.store = async (event, { auth }) => {
 module.exports.update = async (event, { auth }) => {
   const body = JSON.parse(event.body);
 
+  const postId = (body && body.id) || undefined;
+  if (!postId) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        message: `The request must provide a 'id' parameter to update post resources`,
+      }),
+    };
+  }
+
   const post = await Post.findOne({ where: { id: body.id } });
+
   if (!post) {
     return {
       statusCode: 500,
@@ -107,7 +120,18 @@ module.exports.update = async (event, { auth }) => {
 
 module.exports.destroy = async (event) => {
   const body = JSON.parse(event.body);
-  const post = await Post.findOne({ where: { id: body.id } });
+
+  const postId = (body && body.id) || undefined;
+  if (!postId) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        message: `The request must provide a 'id' parameter to delete post resources`,
+      }),
+    };
+  }
+
+  const post = await Post.findOne({ where: { id: body.id, deleted: false } });
   if (!post) {
     return {
       statusCode: 500,

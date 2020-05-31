@@ -1,0 +1,410 @@
+{
+	"info": {
+		"_postman_id": "e9b40328-93b4-43d1-897c-15ff5fc0f416",
+		"name": "aws-cms-serverless",
+		"description": "This collections test all the resources for this project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Status",
+			"item": [
+				{
+					"name": "/",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								""
+							]
+						},
+						"description": "Check the status of service"
+					},
+					"response": []
+				}
+			],
+			"description": "This folder just do a simple check of service status in a root route",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "01d4c74f-a3eb-4c37-8afe-7a17d2100e98",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "70ada276-c8c1-46a1-9be7-be8b8d58a6d4",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Session",
+			"item": [
+				{
+					"name": "/login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0a406c2c-5940-44ff-8ae3-51eaa3c0f17a",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"token\", jsonData.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"admin\",\n\t\"password\": \"admin\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/login",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"login"
+							]
+						},
+						"description": "This request test the login resource"
+					},
+					"response": []
+				}
+			],
+			"description": "This folder is responsible to provide session login resouce",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "85834472-e9ce-4cff-b618-812c849e044c",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "8c830dc8-0038-44b5-b1d0-3cdcfffd34e0",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Posts",
+			"item": [
+				{
+					"name": "/cms/all_posts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/cms/all_posts",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"cms",
+								"all_posts"
+							]
+						},
+						"description": "This resources will retrieve all not deleted posts from database."
+					},
+					"response": []
+				},
+				{
+					"name": "/cms/posts?id=x",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/cms/posts?id=1",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"cms",
+								"posts"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						},
+						"description": "This resources will retrieve one post record from database."
+					},
+					"response": []
+				},
+				{
+					"name": "/cms/posts",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": 1,\n\t\"title\": \"The new title\",\n\t\"subtitle\": \"The new subtitle\",\n\t\"content\": \"The new content\",\n\t\"img_url\": \"http://www.thenewimgurl.com.br/images/image.jpg\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/cms/posts",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"cms",
+								"posts"
+							]
+						},
+						"description": "This resource is responsible to update an existent and non deleted post record"
+					},
+					"response": []
+				},
+				{
+					"name": "/cms/posts",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"The Title\",\n\t\"subtitle\": \"The Subtitle\",\n\t\"content\": \"The Content\",\n\t\"img_url\": \"http://www.theimgurl.com.br/images/image.jpg\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/cms/posts",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"cms",
+								"posts"
+							]
+						},
+						"description": "This resource is responsible to update an existent and non deleted post record"
+					},
+					"response": []
+				},
+				{
+					"name": "/cms/posts",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/cms/posts",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"cms",
+								"posts"
+							]
+						},
+						"description": "This resource is responsible to mask as deleted an existent and non deleted post record"
+					},
+					"response": []
+				}
+			],
+			"description": "This folder is responsible to manage the CRUD of post resources.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "f361cc5d-e586-4cfa-96dd-38e162adf233",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "f7571d2b-020a-4f14-b4b2-ae98931a0748",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "/user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"commonuser\",\n\t\"password\": \"123456789\",\n\t\"access_group_id\": \"123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseurl}}/user",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"user"
+							]
+						},
+						"description": "This resource is responsible to update an existent and non deleted post record"
+					},
+					"response": []
+				}
+			],
+			"description": "This folder is responsible to manage user resources",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "a5638b90-b218-4b87-98fc-8887836da0da",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "62cc79b8-63ac-41e6-9c12-4b4730960c8e",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "770f4cd1-4b36-4cb8-883a-cb883ec9d3cc",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "a46ab346-ea12-4e93-bdca-26b0b9a04e8c",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "a2481b7e-4e03-4111-a3b4-0763952c902b",
+			"key": "baseurl",
+			"value": "https://rp16ef27t8.execute-api.sa-east-1.amazonaws.com/dev",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
