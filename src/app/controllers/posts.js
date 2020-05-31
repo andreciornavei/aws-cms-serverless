@@ -2,6 +2,12 @@
 
 const AWS = require("aws-sdk");
 AWS.config.update({ region: "sa-east-1" });
+if (process.env.NODE_ENV == "test" || process.env.NODE_ENV == "dev") {
+  var credentials = new AWS.SharedIniFileCredentials({
+    profile: "aws-cms-serverless",
+  });
+  AWS.config.credentials = credentials;
+}
 const sqs = new AWS.SQS({ apiVersion: "2012-11-05" });
 
 const { Post } = require("./../models");
