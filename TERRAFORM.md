@@ -1,4 +1,4 @@
-# Hot to use terraform
+# How to use terraform
 
 For knowledgement purpose, this Markdown is used to explain the most used commands to deploy your infrastructure.
 

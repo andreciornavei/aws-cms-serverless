@@ -10,7 +10,7 @@ In time, to provider all this structure in a simple way, this project uses Terra
 
 ## How it works
 
-This project is intended to guide you step by step to deploy this serverless application on your AWS server, so follow all the steps below to get it done.
+This document is intended to guide you step by step to deploy this serverless application on your AWS server, so follow all the steps below to get it done.
 
 ---
 
@@ -27,6 +27,16 @@ $ npm install
 ```
 
 For more documentation about npm, see [this link](https://www.npmjs.com/get-npm.).
+
+---
+
+### 1.3 - Setup NPX
+
+To make simple the execution of all binary libraries in this project like `serverless` and `sequelize`, just install the library below as global, this will take care about de cli executions. 
+
+```bash
+$ npm install -g npx
+```
 
 ---
 
@@ -55,20 +65,18 @@ aws_secret_access_key = <YOUR_SECRET_ACCESS_KEY>
 
 ---
 
-### 1.3 - Install Serverless cli
+### 1.3 - Install npm libraries
 
-We going to use the Serverless Framework to deploy our lambda functions, so, for that, run this code in your terminal to install it globally:
+We have some libraries added to our package.json to make this project work, so run `npm install` to install all these libraries.
 
 ```bash
-$ npm install -g serverless
+$ npm install
 ```
 
-Installing it globally you will get access to serverless cli.
-
-After install serverless make sure to setup your aws credentials with command below (_just for security_):
+After install, we gone have the `serverless cli` available to execute some configurations, so make sure to setup your aws credentials with command below (_just for security_):
 
 ```bash
-$ serverless config credentials -o --provider aws -key=<YOUR_AWS_ACCESS_KEY> --secret=<YOUR_AWS_SECRET_ACCESS_KEY>
+$ npx serverless config credentials -o --provider aws -key=<YOUR_AWS_ACCESS_KEY> --secret=<YOUR_AWS_SECRET_ACCESS_KEY>
 ```
 
 For more knowledge about serverless, see the docs at [serverless](https://www.serverless.com/framework/docs/).
@@ -101,8 +109,6 @@ On the final step, access the terraform.tf file and make sure that the value of 
 
 ## 2 - Deploying everything
 
----
-
 ### 2.1 - Deploy the infrastructure to AWS with Terraform
 
 To start deploy, the first service we need to release is `terraform`, it will able us to enable SQS and RDS resources for execute the next steps.
@@ -125,11 +131,30 @@ _3 - Now, if everithing is ok on the plan, lets apply it:_
 terraform apply
 ```
 
+_if everything occurred ok, now you have now the infrastructure online in your aws account._
+
 ---
 
 ### 2.2 - Deploying our database structure with Sequelize
 
 Now, we should have the RDS online, so we can run sequelize commands to initialize our database and records on server.
+
+__Before run the next commands, just follow one more step:__
+_Run terraform command below to get generated variables when terrafor was deployed:_
+
+```bash
+$ terraform show
+```
+
+Now copy `aws_rds_cluster_instance.cluster_instances.endpoint` variable to `DB_HOST` parameter on `.env` file for node.js access it and have access to currect resources at `aws`.
+
+__also__
+
+copy `aws_sqs_queue.aws-cms-serverless-queue.id` variable to `SQS_URL` parameter on `.env` file for node.js access it and have access to currect resources at `aws`.
+
+Now you can keep going.
+
+---
 
 _2.2.1 Run this command to create the database on server._
 
@@ -158,7 +183,7 @@ As the last serve to release, we going to deploy serverless that will upload all
 To deploy all the lambda functions located at `src/lambda` folder, you just need to run the command below, and you're done.
 
 ```bash
-$ serverless deploy -v
+$ npx serverless deploy -v
 ```
 
 _With it, all the source code that will represents our API will be online to be consumed._
@@ -172,15 +197,78 @@ _With it, all the source code that will represents our API will be online to be 
 For test your lambda functions without an endpoint API, you can invoke it functions using `serverless invoke local`, like code below where `status` is yours function name:
 
 ```bash
-$ serverless invoke local -f status -l
+$ npx serverless invoke local -f status
 ```
 
 ---
 
-### 3.2 - serverless-offline
+### 3.2 - Testing with jest
 
-For this section we going to test the serverless lambda functions offline as a endpoint API, it should be a good pratice to test the project during development. I prepared a script at package.json scripts to deploy a local server and test it during development, so run the command below to start the serverless offline if you want:
+For test all routes and be safe about new changes, I prepared a  script on `package.json` scripts to join `serverless-offline` and `jest` locally. Run the command below to test it yourself. 
+
+```bash
+$ npm run test
+```
+
+---
+
+### 3.3 - `serverless OFFLINE` with `Postman`
+
+For this section we going to test the serverless lambda functions offline as a endpoint API, it should be a good pratice to test the project manually during development. I prepared a script at `package.json` scripts to deploy a local server and test it during development joined with postman, so run the command below to start the serverless offline if you want:
 
 ```bash
 $ npm run dev
 ```
+
+_this project has two files exporteds from `postman`: [aws-cms-serverless.postman_environment.json](aws-cms-serverless.postman_environment.json) and [aws-cms-serverless.postman_collection.json](aws-cms-serverless.postman_collection.json), so you just need to import it to your `postman` and test the application_.
+
+_For develpment tests, make sure that the variable `baseurl` is setted to http://localhost:4000_
+
+---
+
+### 3.4 - `serverless ONLINE` with `Postman`
+
+In the end, the tests before was made in local machine and not was used the infrastructure deployed by terraform and serverless to work. Now to test all the service online is simple, you just need to change the `baseurl` variable on `Postman` to the serverless baseurl genereted when deployed.  
+
+_Run the command bellow to see the endpoint at `endpoints` records:_
+
+```bash
+$ serverless info
+```
+
+_Now copy the first `GET`- `endpoint` record and replace the variable `baseurl` at postman to test it online._
+
+_After that you will be able to test all deployed lambda resources online._
+
+---
+
+
+## _🎉  Congratulations, You're done._
+
+I hope this documentation is clear and helps you understand how to configure a serverless application with terraform.
+
+---
+
+## License
+
+[![License: MIT](https://img.shields.io/badge/license-MIT-purple.svg)](LICENSE)
+
+Copyright (c) 2020 André Ciornavei
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
