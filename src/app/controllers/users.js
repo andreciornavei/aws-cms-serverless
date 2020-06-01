@@ -2,9 +2,19 @@
 
 const { User } = require("./../models");
 
-module.exports.store = async (event) => {
+module.exports.store = async (event, { auth }) => {
   const body = JSON.parse(event.body);
 
+  //check permission with ID 1 for "User Manager"
+  if(!auth.dataValues.access_group_id.includes("1")){
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        message: "You have no user permission to manage this user resource"
+      })
+    }
+  }
+  
   const unique = await User.findOne({ where: { username: body.username } });
   if (unique) {
     return {

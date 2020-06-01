@@ -50,7 +50,19 @@ module.exports.show = async (event) => {
 };
 
 module.exports.store = async (event, { auth }) => {
-  
+  //check permission with ID 2 or 3 for "Content Manger and/or Content Curator"
+  if (
+    !auth.dataValues.access_group_id.includes("2") &&
+    !auth.dataValues.access_group_id.includes("3")
+  ) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        message: "You have no user permission to manage this post resource",
+      }),
+    };
+  }
+
   const body = JSON.parse(event.body);
 
   const messageData = {
@@ -83,6 +95,19 @@ module.exports.store = async (event, { auth }) => {
 };
 
 module.exports.update = async (event, { auth }) => {
+  //check permission with ID 2 or 3 for "Content Manger and/or Content Curator"
+  if (
+    !auth.dataValues.access_group_id.includes("2") &&
+    !auth.dataValues.access_group_id.includes("3")
+  ) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        message: "You have no user permission to manage this post resource",
+      }),
+    };
+  }
+
   const body = JSON.parse(event.body);
 
   const postId = (body && body.id) || undefined;
@@ -118,7 +143,17 @@ module.exports.update = async (event, { auth }) => {
   };
 };
 
-module.exports.destroy = async (event) => {
+module.exports.destroy = async (event, { auth }) => {
+  //check permission with ID 2 for "Content Manger"
+  if (!auth.dataValues.access_group_id.includes("2")) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        message: "You have no user permission to manage this post resource",
+      }),
+    };
+  }
+
   const body = JSON.parse(event.body);
 
   const postId = (body && body.id) || undefined;
