@@ -65,15 +65,9 @@ aws_secret_access_key = <YOUR_SECRET_ACCESS_KEY>
 
 ---
 
-### 1.3 - Install npm libraries
+### 1.3 - Configure Serverless credentials
 
-We have some libraries added to our package.json to make this project work, so run `npm install` to install all these libraries.
-
-```bash
-$ npm install
-```
-
-After install, we gone have the `serverless cli` available to execute some configurations, so make sure to setup your aws credentials with command below (_just for security_):
+For now, we must have the `serverless cli` available to execute some configurations, so make sure to setup your aws credentials with command below (_just for security_):
 
 ```bash
 $ npx serverless config credentials -o --provider aws -key=<YOUR_AWS_ACCESS_KEY> --secret=<YOUR_AWS_SECRET_ACCESS_KEY>
