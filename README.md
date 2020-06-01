@@ -125,7 +125,7 @@ _3 - Now, if everithing is ok on the plan, lets apply it:_
 terraform apply
 ```
 
-_if everything occurred ok, now you have now the infrastructure online in your aws account._
+_if everything occurred ok, now you have the infrastructure online in your aws account._
 
 ---
 
@@ -134,6 +134,7 @@ _if everything occurred ok, now you have now the infrastructure online in your a
 Now, we should have the RDS online, so we can run sequelize commands to initialize our database and records on server.
 
 __Before run the next commands, just follow one more step:__
+
 _Run terraform command below to get generated variables when terrafor was deployed:_
 
 ```bash
@@ -237,7 +238,7 @@ _After that you will be able to test all deployed lambda resources online._
 ---
 
 
-## _🎉  Congratulations, You're done._
+## _🎉  Congradulations, You're done._
 
 I hope this documentation is clear and helps you understand how to configure a serverless application with terraform.
 
