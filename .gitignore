@@ -3,19 +3,17 @@ node_modules
 jspm_packages
 
 # Serverless directories
-.serverless/*
-.middleware/*
+.serverless
+.middleware
 
 # Terraform directories
-.terraform/*
+.terraform
 
 # Jest reports
 /tests/coverage/*
 
 # Test database (sqlite) file
 /tests/database.sqlite
-
-.env
 
 terraform.tfstate
 terraform.tfstate.backup

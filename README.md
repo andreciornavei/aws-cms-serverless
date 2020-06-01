@@ -163,22 +163,24 @@ $ serverless deploy -v
 
 _With it, all the source code that will represents our API will be online to be consumed._
 
+---
+
 ## 3 - Testing
 
 ### 3.1 - Invoke your functions locally
 
-For test your lambda functions without an endpoint API, you can invoke it functions using `serverless invoke local`, like code below where `helloworld` is yours function name:
+For test your lambda functions without an endpoint API, you can invoke it functions using `serverless invoke local`, like code below where `status` is yours function name:
 
 ```bash
-$ serverless invoke local -f helloworld -l
+$ serverless invoke local -f status -l
 ```
 
 ---
 
 ### 3.2 - serverless-offline
 
-For this section we going to test the serverless lambda functions offline as a endpoint API, it should be a good pratice to test the project during development, so run the command below to start the serverless offline:
+For this section we going to test the serverless lambda functions offline as a endpoint API, it should be a good pratice to test the project during development. I prepared a script at package.json scripts to deploy a local server and test it during development, so run the command below to start the serverless offline if you want:
 
 ```bash
-$ npx serverless offline
+$ npm run dev
 ```

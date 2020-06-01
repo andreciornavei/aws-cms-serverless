@@ -11,6 +11,15 @@ resource "aws_sqs_queue" "aws-cms-serverless-queue" {
   receive_wait_time_seconds = 10  
 }
 
+resource "aws_rds_cluster_instance" "cluster_instances" {
+  identifier          = "aurora-cluster-aws-cms-serverless"
+  cluster_identifier  = "${aws_rds_cluster.rds_cluster.id}"
+  engine              = "${aws_rds_cluster.rds_cluster.engine}"
+  engine_version      = "${aws_rds_cluster.rds_cluster.engine_version}"
+  instance_class      = "db.t3.small"
+  publicly_accessible = true
+}
+
 resource "aws_rds_cluster" "rds_cluster" {
   apply_immediately       = true
   cluster_identifier      = "aws-cms-serverless-aurora"

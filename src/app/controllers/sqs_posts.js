@@ -1,17 +1,6 @@
 "use strict";
 
-const AWS = require("aws-sdk");
-AWS.config.update({ region: "sa-east-1" });
-
-if (process.env.NODE_ENV == "test" || process.env.NODE_ENV == "dev") {
-  var credentials = new AWS.SharedIniFileCredentials({
-    profile: "default",
-  });
-  AWS.config.credentials = credentials;
-}
-
-const sqs = new AWS.SQS({ apiVersion: "2012-11-05" });
-
+const sqs = require('../utils/sqs')
 const { Post } = require("./../models");
 
 module.exports.store = async (event) => {
@@ -51,7 +40,6 @@ module.exports.store = async (event) => {
         ReceiptHandle: results.Messages[0].ReceiptHandle
       });
       */
-
       return {
         statusCode: 200,
         body: JSON.stringify(post),
