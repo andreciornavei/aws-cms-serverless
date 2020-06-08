@@ -1,9 +1,9 @@
 "use strict";
 
-const sqs = require('../utils/sqs')
-const { Post } = require("./../models");
+const sqs = require('./../../utils/sqs')
+const { Post } = require("./../../models");
 
-module.exports.store = async (event) => {
+module.exports.handle = async () => {
   const result = sqs.receiveMessage({
     QueueUrl: process.env.SQS_URL,
   });
@@ -34,12 +34,6 @@ module.exports.store = async (event) => {
         }),
       };
     } else {
-      /*
-      sqs.deleteMessage({
-        QueueUrl: process.env.SQS_URL,
-        ReceiptHandle: results.Messages[0].ReceiptHandle
-      });
-      */
       return {
         statusCode: 200,
         body: JSON.stringify(post),

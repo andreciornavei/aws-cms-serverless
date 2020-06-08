@@ -2,42 +2,15 @@
 
 const jwt = require("jsonwebtoken");
 const { promisify } = require("util");
+const { User } = require("./../../models");
 
-const { User } = require("./../models");
-module.exports.login = async (event) => {
-  let body = {};
-  if (event.body !== null && event.body !== undefined) {
-    body = JSON.parse(event.body);
-  }
+module.exports.handle = async (event, context) => {
 
-  const { username, password } = body;
-
-  const user = await User.findOne({
-    where: { username: username },
-  });
-
-  if (!user || !(await user.checkPassword(password))) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({
-        message: "username or password invalid",
-        token: null
-      }),
-    };
-  }
-
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
-      token: user.generateToken(),
-    }),
-  };
-};
-
-module.exports.auth = async (event, context) => {
+  
   const authHeader =
-    (event.headers && event.headers.Authorization) || undefined;
-
+  (event.headers && event.headers.Authorization) || undefined;
+  
+  
   if (!authHeader) {
     context.end();
     return {
@@ -47,16 +20,12 @@ module.exports.auth = async (event, context) => {
       }),
     };
   }
-
-  const [, token] = authHeader.split(" ");
-
+  
   try {
+    const [, token] = authHeader.split(" ");
     const payload = await promisify(jwt.verify)(token, process.env.APP_SECRET);
     const user = await User.findOne({ where: { id: payload.id } });
     if (!user) {
-      const users = await User.findAll();
-      console.log("ALL USERS =", users);
-
       context.end();
       return {
         statusCode: 403,

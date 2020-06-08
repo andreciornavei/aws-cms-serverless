@@ -17,63 +17,63 @@ custom:
 
 functions:
   status:
-    handler: src/app/functions/status.handle
+    handler: src/app/functions/status/index.handle
     events:
       - http:
           path: /
           method: get
   login:
-    handler: src/app/functions/session.login
+    handler: src/app/functions/session/login.handle
     events:
       - http:
           path: /login
           method: post
   create_user:
     handler: 
-      - src/app/functions/session.auth
-      - src/app/functions/users.store
+      - src/app/functions/session/auth.handle
+      - src/app/functions/users/store.handle
     events:
       - http:
           path: /user
           method: post
   delete_post:
     handler:
-      - src/app/functions/session.auth
-      - src/app/functions/posts.destroy
+      - src/app/functions/session/auth.handle
+      - src/app/functions/posts/destroy.handle
     events:
       - http:
           path: /cms/posts
           method: delete
   list_post:
-    handler: src/app/functions/posts.index
+    handler: src/app/functions/posts/index.handle
     events:
       - http:
           path: /cms/all_posts
           method: get
   get_post:
-    handler: src/app/functions/posts.show
+    handler: src/app/functions/posts/show.handle
     events:
       - http:
           path: /cms/posts
           method: get
   update_post:
     handler:
-      - src/app/functions/session.auth
-      - src/app/functions/posts.update
+      - src/app/functions/session/auth.handle
+      - src/app/functions/posts/update.handle
     events:
       - http:
           path: /cms/posts
           method: put
   create_post:
     handler:
-      - src/app/functions/session.auth
-      - src/app/functions/posts.store
+      - src/app/functions/session/auth.handle
+      - src/app/functions/posts/store.handle
     events:
       - http:
           path: /cms/posts
           method: post
   sqs_create_post:
-    handler: src/app/functions/sqs_posts.store
+    handler: src/app/functions/sqs/post.handle
     events:
       - sqs:
           arn: arn:aws:sqs:sa-east-1:750813453023:aws-cms-serverless-queue
