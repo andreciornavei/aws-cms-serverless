@@ -17,7 +17,7 @@ custom:
 
 functions:
   status:
-    handler: src/app/controllers/hello.handle
+    handler: src/app/controllers/status.handle
     events:
       - http:
           path: /

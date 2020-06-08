@@ -93,7 +93,7 @@ $ terraform
 Usage: terraform [--version] [--help] <command> [args]
 ```
 
-For more knowledge about terraform, check the [TERRAFORM.md](./TERRAFORM.md) as a fast documentation.
+For more knowledge about terraform, check the [./terraform/README.md](./terraform/README.md) as a fast documentation.
 
 For this project we going to use the [AWS](https://www.terraform.io/docs/providers/aws/index.html) provider.
 
@@ -141,11 +141,11 @@ _Run terraform command below to get generated variables when terrafor was deploy
 $ terraform show
 ```
 
-Now copy `aws_rds_cluster_instance.cluster_instances.endpoint` variable to `DB_HOST` parameter on `.env` file for node.js access it and have access to currect resources at `aws`.
+Now copy `aws_rds_cluster_instance.cluster_instances.endpoint` variable to `DB_HOST` parameter on `.env` file for node.js access it and have access to correct resources at `aws`.
 
 __also__
 
-copy `aws_sqs_queue.aws-cms-serverless-queue.id` variable to `SQS_URL` parameter on `.env` file for node.js access it and have access to currect resources at `aws`.
+copy `aws_sqs_queue.aws-cms-serverless-queue.id` variable to `SQS_URL` parameter on `.env` file for node.js access it and have access to correct resources at `aws`.
 
 Now you can keep going.
 
@@ -175,7 +175,7 @@ $ npx sequelize db:seed:all
 
 As the last serve to release, we going to deploy serverless that will upload all ours lambda functions and integrate with others services deployed before.
 
-To deploy all the lambda functions located at `src/lambda` folder, you just need to run the command below, and you're done.
+To deploy all the lambda functions located at `src/app/functions` folder, you just need to run the command below, and you're done.
 
 ```bash
 $ npx serverless deploy -v
