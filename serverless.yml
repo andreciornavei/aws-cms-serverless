@@ -77,7 +77,6 @@ functions:
     events:
       - sqs:
           arn: arn:aws:sqs:sa-east-1:750813453023:aws-cms-serverless-queue
-          batchSize: 10
 
 plugins:
   - serverless-offline
