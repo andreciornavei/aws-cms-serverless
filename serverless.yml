@@ -16,6 +16,8 @@ custom:
     cleanFolder: false
 
 functions:
+  defaultAuthorizer:
+    handler: src/app/functions/session/auth.handle
   status:
     handler: src/app/functions/status/index.handle
     events:
@@ -29,17 +31,15 @@ functions:
           path: /login
           method: post
   create_user:
-    handler: 
-      - src/app/functions/session/auth.handle
-      - src/app/functions/users/store.handle
+    handler: src/app/functions/users/store.handle
+    authorizer: defaultAuthorizer
     events:
       - http:
           path: /user
           method: post
   delete_post:
-    handler:
-      - src/app/functions/session/auth.handle
-      - src/app/functions/posts/destroy.handle
+    handler: src/app/functions/posts/destroy.handle
+    authorizer: defaultAuthorizer
     events:
       - http:
           path: /cms/posts
@@ -57,17 +57,15 @@ functions:
           path: /cms/posts
           method: get
   update_post:
-    handler:
-      - src/app/functions/session/auth.handle
-      - src/app/functions/posts/update.handle
+    handler: src/app/functions/posts/update.handle
+    authorizer: defaultAuthorizer
     events:
       - http:
           path: /cms/posts
           method: put
   create_post:
-    handler:
-      - src/app/functions/session/auth.handle
-      - src/app/functions/posts/store.handle
+    handler: src/app/functions/posts/store.handle
+    authorizer: defaultAuthorizer
     events:
       - http:
           path: /cms/posts

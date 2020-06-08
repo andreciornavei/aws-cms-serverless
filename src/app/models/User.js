@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     User.prototype.generateToken = function(){
-        return jwt.sign({ id: this.id }, process.env.APP_SECRET)
+        return jwt.sign({ id: this.id, username: this.username, acl: this.access_group_id }, process.env.APP_SECRET)
     }
 
     return User;

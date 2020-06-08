@@ -1,10 +1,12 @@
 "use strict";
 
+const jwt = require("./../../utils/jwt");
 const { Post } = require("./../../models");
 
-module.exports.handle = async (event, { auth }) => {
+module.exports.handle = async (event) => {
   //check permission with ID 2 for "Content Manger"
-  if (!auth.dataValues.access_group_id.includes("2")) {
+  const payload = await jwt(event);
+  if (!payload.acl.includes("2")) {
     return {
       statusCode: 500,
       body: JSON.stringify({

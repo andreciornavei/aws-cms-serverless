@@ -1,51 +1,19 @@
 "use strict";
 
-const jwt = require("jsonwebtoken");
-const { promisify } = require("util");
-const { User } = require("./../../models");
+const jwt = require("./../../utils/jwt");
 
 module.exports.handle = async (event, context) => {
+  const payload = await jwt(event);
 
-  
-  const authHeader =
-  (event.headers && event.headers.Authorization) || undefined;
-  
-  
-  if (!authHeader) {
+  if (!payload) {
     context.end();
     return {
       statusCode: 403,
       body: JSON.stringify({
-        message: "Token not provided",
+        message: "Token invalid or not provided",
       }),
     };
   }
-  
-  try {
-    const [, token] = authHeader.split(" ");
-    const payload = await promisify(jwt.verify)(token, process.env.APP_SECRET);
-    const user = await User.findOne({ where: { id: payload.id } });
-    if (!user) {
-      context.end();
-      return {
-        statusCode: 403,
-        body: JSON.stringify({
-          message: `The user was not founded for this payload token authorization = ${JSON.stringify(
-            payload
-          )} at auth middleware`,
-        }),
-      };
-    } else {
-      context.auth = user;
-      return { statusCode: 201 };
-    }
-  } catch (err) {
-    context.end();
-    return {
-      statusCode: 403,
-      body: JSON.stringify({
-        message: "Invalid token",
-      }),
-    };
-  }
+
+  return { statusCode: 200 };
 };

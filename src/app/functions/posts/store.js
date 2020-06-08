@@ -1,12 +1,16 @@
 "use strict";
 
+const jwt = require("./../../utils/jwt");
 const sqs = require("./../../utils/sqs");
 
-module.exports.handle = async (event, { auth }) => {
+module.exports.handle = async (event) => {
+
+  const payload = await jwt(event);
+
   //check permission with ID 2 or 3 for "Content Manger and/or Content Curator"
   if (
-    !auth.dataValues.access_group_id.includes("2") &&
-    !auth.dataValues.access_group_id.includes("3")
+    !payload.acl.includes("2") &&
+    !payload.acl.includes("3")
   ) {
     return {
       statusCode: 500,
@@ -23,7 +27,7 @@ module.exports.handle = async (event, { auth }) => {
     subtitle: body.subtitle,
     content: body.content,
     img_url: body.img_url || "",
-    author: auth.dataValues.username,
+    author: payload.username,
   };
 
   try {
