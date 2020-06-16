@@ -32,6 +32,14 @@ describe("Posts", () => {
     expect(response.status).toBe(200);
   });
 
+  it("should not be able to create a new post if user not authenticated", async () => {
+    const post = await factory.build("Post");
+    const response = await request(process.env.API_ENDPOINT)
+      .post("/cms/posts")
+      .send(post.dataValues);
+    expect(response.status).toBe(403);
+  })
+
   it("should not be able to create a new post if has no 'Content Manager' and/or 'Content Curator' permission", async () => {
     const user = await factory.create("User", {
       access_group_id: "1",

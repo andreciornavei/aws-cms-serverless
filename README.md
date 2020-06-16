@@ -215,7 +215,7 @@ For this section we going to test the serverless lambda functions offline as a e
 $ npm run dev
 ```
 
-_this project has two files exporteds from `postman`: [aws-cms-serverless.postman_environment.json](aws-cms-serverless.postman_environment.json) and [aws-cms-serverless.postman_collection.json](aws-cms-serverless.postman_collection.json), so you just need to import it to your `postman` and test the application_.
+_this project has two files exporteds from `postman`: [postman_environment.json](postman_environment.json) and [postman_collection.json](postman_collection.json), so you just need to import it to your `postman` and test the application_.
 
 _For develpment tests, make sure that the variable `baseurl` is setted to http://localhost:4000_
 
