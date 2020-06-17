@@ -14,6 +14,20 @@ This document is intended to guide you step by step to deploy this serverless ap
 
 ---
 
+## The project application
+
+This project contains a basic approach of using some AWS resources like `API Gateway`, `Lambda Functions`, `RDS AuroraDB`, and `SQS`. 
+
+The application consists in a basic CMS (Content Management System) with a default user admin who can create new users with access permissions. The users can create, update and delete cms posts according with itself permissions. List and Get posts has public access for internet.
+
+In an particular approach to make use of SQS, everytime that an user create a new post, the post will be sent to a SQS queue to be processed asynchronous by another Lambda Function, the (`Commit Post`).
+
+Below you can see the diagram about how the architecture of the solution must to be.
+
+![](./_workspace/diagram.png)
+
+--- 
+
 ## 1 - Setup your environment
 
 ### 1.1 - Setup NodeJS and NPM
