@@ -16,9 +16,9 @@ module "users" {
     account_id      = data.aws_caller_identity.current.account_id
 }
 
-module "cms" {
-    source          = "../../infra/cms"
-    region          = var.region
-    environment     = var.environment
-    account_id      = data.aws_caller_identity.current.account_id
-}
+# module "cms" {
+#     source          = "../../infra/cms"
+#     region          = var.region
+#     environment     = var.environment
+#     account_id      = data.aws_caller_identity.current.account_id
+# }
