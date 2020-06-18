@@ -9,7 +9,7 @@ resource "aws_rds_cluster" "rds_cluster" {
 }
 
 resource "aws_rds_cluster_instance" "rds_cluster_instance" {
-  identifier          = "${var.environment}-auroradb-instance"
+  identifier          = "${var.environment}-${var.auroradb_instance_key}"
   cluster_identifier  = aws_rds_cluster.rds_cluster.id
   engine              = aws_rds_cluster.rds_cluster.engine
   engine_version      = aws_rds_cluster.rds_cluster.engine_version
@@ -18,7 +18,25 @@ resource "aws_rds_cluster_instance" "rds_cluster_instance" {
 }
 
 resource "aws_ssm_parameter" "ssm_rds_cluster_instance_endpoint" {
-  name    = "${var.environment}-ssm-rds-cluster-instance-endpoint"
+  name    = "${var.environment}-rds-cluster-instance-endpoint"
   type    = "String"
   value   = aws_rds_cluster_instance.rds_cluster_instance.endpoint
+}
+
+resource "aws_ssm_parameter" "ssm_rds_cluster_instance_dbname" {
+  name    = "${var.environment}-rds-cluster-instance-dbname"
+  type    = "String"
+  value   = aws_rds_cluster.rds_cluster.database_name
+}
+
+resource "aws_ssm_parameter" "ssm_rds_cluster_instance_username" {
+  name    = "${var.environment}-rds-cluster-instance-username"
+  type    = "String"
+  value   = aws_rds_cluster.rds_cluster.master_username
+}
+
+resource "aws_ssm_parameter" "ssm_rds_cluster_instance_password" {
+  name    = "${var.environment}-rds-cluster-instance-password"
+  type    = "String"
+  value   = aws_rds_cluster.rds_cluster.master_password
 }

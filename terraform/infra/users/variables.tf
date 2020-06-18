@@ -13,3 +13,7 @@ variable "account_id" {
 variable "region" {
     
 }
+
+variable "auroradb_instance_key" {
+    
+}

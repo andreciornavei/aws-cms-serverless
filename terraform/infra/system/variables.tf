@@ -13,3 +13,7 @@ variable "auroradb_username" {
 variable "auroradb_password" {
 
 }
+
+variable "auroradb_instance_key" {
+    
+}

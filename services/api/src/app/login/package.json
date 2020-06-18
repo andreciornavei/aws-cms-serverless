@@ -1,9 +1,0 @@
-{
-  "name": "login_user",
-  "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
-  "devDependencies": {
-    "aws-sdk": "^2.698.0"
-  }
-}
