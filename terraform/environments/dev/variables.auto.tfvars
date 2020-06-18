@@ -1,3 +1,3 @@
 environment = "dev"
 region = "us-east-1"
-auroradb_instance_key = "auroradb-instance"
+db_instance_key = "db-instance"

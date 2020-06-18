@@ -10,9 +10,7 @@ executeSls() {
     sls deploy --stage $1
 }
 
-cd services/api/
+cd app/api/
 executeSls $1
-cd ../users-consumer/
-executeSls $1
-cd ../users-publisher/
+cd ../sqs/
 executeSls $1

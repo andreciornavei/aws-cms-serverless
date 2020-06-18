@@ -18,18 +18,18 @@ custom:
 
 functions:
   authorizer:
-    handler: src/app/authorizer/index.handler
+    handler: src/functions/authorizer/index.handler
     environment: 
       JWT_SECRET: ${ssm:${self:custom.stage}-jwt-secret}
   login:
     role: ${ssm:${self:custom.stage}-login-iam-role}
-    handler: src/app/login/index.handler
+    handler: src/functions/login/index.handler
     environment: 
       JWT_SECRET: ${ssm:${self:custom.stage}-jwt-secret}
-      DB_HOST: ${ssm:${self:custom.stage}-rds-cluster-instance-endpoint}
-      DB_NAME: ${ssm:${self:custom.stage}-rds-cluster-instance-dbname}
-      DB_USER: ${ssm:${self:custom.stage}-rds-cluster-instance-username}
-      DB_PASS: ${ssm:${self:custom.stage}-rds-cluster-instance-password}
+      DB_HOST: ${ssm:${self:custom.stage}-rds-db-instance-host}
+      DB_NAME: ${ssm:${self:custom.stage}-rds-db-instance-name}
+      DB_USER: ${ssm:${self:custom.stage}-rds-db-instance-user}
+      DB_PASS: ${ssm:${self:custom.stage}-rds-db-instance-pass}
     events:
       - http:
           path: /login

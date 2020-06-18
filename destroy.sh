@@ -3,11 +3,9 @@ executeSls() {
     sls remove --stage $1
 }
 
-cd services/api/
+cd app/api/
 executeSls $1
-cd ../users-consumer/
-executeSls $1
-cd ../users-publisher/
+cd ../sqs/
 executeSls $1
 
 cd ../../terraform/environments/$1

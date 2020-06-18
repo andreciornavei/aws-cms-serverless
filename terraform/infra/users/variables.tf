@@ -14,6 +14,6 @@ variable "region" {
     
 }
 
-variable "auroradb_instance_key" {
+variable "db_instance_key" {
     
 }

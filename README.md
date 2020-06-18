@@ -16,7 +16,7 @@ This document is intended to guide you step by step to deploy this serverless ap
 
 ## The project application
 
-This project contains a basic approach of using some AWS resources like `API Gateway`, `Lambda Functions`, `RDS AuroraDB`, and `SQS`. 
+This project contains a basic approach of using some AWS resources like `API Gateway`, `Lambda Functions`, `RDS`, and `SQS`. 
 
 The application consists in a basic CMS (Content Management System) with a default user admin who can create new users with access permissions. The users can create, update and delete cms posts according with itself permissions. List and Get posts has public access for internet.
 
@@ -115,9 +115,52 @@ On the final step, access the terraform.tf file and make sure that the value of 
 
 ---
 
-## 2 - Deploying everything
+## 2 - Encryption
 
-### 2.1 - Deploy the infrastructure to AWS with Terraform
+This project contains some encrypted files for security reasons, this files are located at `./terraform/environments/dev/secrets.auto.tfvars` and `./database/src/config/database.secret.js`. Them are used to provide some particular informations to our infrastructure and database connections (`migrations` and `seeds`).
+
+If you are a partner and already have a aws-cms-serverless.key to decrypt it files, then make sure to install [git-crypt][git_crypt] in your machine and run:
+
+```bash
+$ git-crypt unlock ~/.keys/aws-cms-serverless.key
+```
+
+_`~/.keys` should be the local where your key are placed and `aws-cms-serverless.key` should be the name of the key._
+
+If you are not a partner, so probably you not have the key. In this case, copy the template below and override the encrypted files, then replace the content with your own informations:
+
+
+_for file: `./terraform/environments/dev/secrets.auto.tfvars`:_
+```tfvars
+jwt_secret  = "your-own-data" #base64 key with 32 bytes
+db_name     = "your-own-data"
+db_user     = "your-own-data"
+db_pass     = "your-own-data"
+```
+To generate a random base64 key use: https://generate.plus/en/base64
+
+_for file: `./database/src/config/database.secret.js`:_
+```js
+module.exports = {
+  host: "<your-rds-instance-endpoint>",
+  username: "<your-rds-instance-database-username>",
+  password: "<your-rds-instance-database-password>",
+  database: "<your-rds-instance-database-name>",
+  dialect: "mysql", 
+  logging: false,
+  define: {
+    timestamps: true,
+    underscored: true,
+    underscoredAll: true,
+  }
+};
+```
+
+---
+
+## 3 - Deploying everything
+
+### 3.1 - Deploy the infrastructure to AWS with Terraform
 
 To start deploy, the first service we need to release is `terraform`, it will able us to enable SQS and RDS resources for execute the next steps.
 
@@ -143,7 +186,7 @@ _if everything occurred ok, now you have the infrastructure online in your aws a
 
 ---
 
-### 2.2 - Deploying our database structure with Sequelize
+### 3.2 - Deploying our database structure with Sequelize
 
 Now, we should have the RDS online, so we can run sequelize commands to initialize our database and records on server.
 
@@ -165,19 +208,19 @@ Now you can keep going.
 
 ---
 
-_2.2.1 Run this command to create the database on server._
+_3.2.1 Run this command to create the database on server._
 
 ```bash
 $ npx sequelize db:create
 ```
 
-_2.2.2 Run this command to create all tables in database._
+_3.2.2 Run this command to create all tables in database._
 
 ```bash
 $ npx sequelize db:migrate
 ```
 
-_2.2.3 Run this command to create default records on database tables._
+_3.2.3 Run this command to create default records on database tables._
 
 ```bash
 $ npx sequelize db:seed:all
@@ -185,7 +228,7 @@ $ npx sequelize db:seed:all
 
 ---
 
-### 2.3 - Deploy lambda functions with Serverless
+### 3.3 - Deploy lambda functions with Serverless
 
 As the last serve to release, we going to deploy serverless that will upload all ours lambda functions and integrate with others services deployed before.
 
@@ -199,9 +242,9 @@ _With it, all the source code that will represents our API will be online to be 
 
 ---
 
-## 3 - Testing
+## 4 - Testing
 
-### 3.1 - Invoke your functions locally
+### 4.1 - Invoke your functions locally
 
 For test your lambda functions without an endpoint API, you can invoke it functions using `serverless invoke local`, like code below where `status` is yours function name:
 
@@ -211,7 +254,7 @@ $ npx serverless invoke local -f status
 
 ---
 
-### 3.2 - Testing with jest
+### 4.2 - Testing with jest
 
 For test all routes and be safe about new changes, I prepared a  script on `package.json` scripts to join `serverless-offline` and `jest` locally. Run the command below to test it yourself. 
 
@@ -221,7 +264,7 @@ $ npm run test
 
 ---
 
-### 3.3 - `serverless OFFLINE` with `Postman`
+### 4.3 - `serverless OFFLINE` with `Postman`
 
 For this section we going to test the serverless lambda functions offline as a endpoint API, it should be a good pratice to test the project manually during development. I prepared a script at `package.json` scripts to deploy a local server and test it during development joined with postman, so run the command below to start the serverless offline if you want:
 
@@ -235,7 +278,7 @@ _For develpment tests, make sure that the variable `baseurl` is setted to http:/
 
 ---
 
-### 3.4 - `serverless ONLINE` with `Postman`
+### 4.4 - `serverless ONLINE` with `Postman`
 
 In the end, the tests before was made in local machine and not was used the infrastructure deployed by terraform and serverless to work. Now to test all the service online is simple, you just need to change the `baseurl` variable on `Postman` to the serverless baseurl genereted when deployed.  
 

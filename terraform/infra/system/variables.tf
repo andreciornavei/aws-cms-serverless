@@ -2,18 +2,18 @@ variable "environment" {
 
 }
 
-variable "auroradb_name" {
+variable "db_name" {
 
 }
 
-variable "auroradb_username" {
+variable "db_user" {
 
 }
 
-variable "auroradb_password" {
+variable "db_pass" {
 
 }
 
-variable "auroradb_instance_key" {
+variable "db_instance_key" {
     
 }
