@@ -16,7 +16,7 @@ resource "aws_db_instance" "db_instance" {
 resource "aws_ssm_parameter" "ssm_db_instance_host" {
   name    = "${var.environment}-rds-db-instance-host"
   type    = "String"
-  value   = aws_db_instance.db_instance.endpoint
+  value   = aws_db_instance.db_instance.address
 }
 
 resource "aws_ssm_parameter" "ssm_db_instance_name" {
