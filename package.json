@@ -7,10 +7,7 @@
     "test": "concurrently \"NODE_ENV=test serverless offline start\" \"wait-on http://localhost:4000/dev && NODE_ENV=test sequelize db:migrate:undo:all && NODE_ENV=test sequelize db:migrate && NODE_ENV=test sequelize db:seed:all && NODE_ENV=test jest && NODE_ENV=test sequelize db:migrate:undo:all\"",
     "dev": "concurrently \"NODE_ENV=dev serverless offline start\" \"wait-on http://localhost:4000/dev && NODE_ENV=dev sequelize db:create && NODE_ENV=dev sequelize db:migrate:undo:all && NODE_ENV=dev sequelize db:migrate && NODE_ENV=dev sequelize db:seed:all\""
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/andreciornavei/aws-cms-serverless.git"
-  },
+  "repository": "git+https://github.com/andreciornavei/aws-cms-serverless.git",
   "keywords": [
     "Aws",
     "Serverless",
@@ -24,17 +21,7 @@
     "url": "https://github.com/andreciornavei/aws-cms-serverless/issues"
   },
   "homepage": "https://github.com/andreciornavei/aws-cms-serverless#readme",
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "dotenv": "^8.2.0",
-    "factory-girl": "^5.0.4",
-    "jsonwebtoken": "^8.5.1",
-    "mysql2": "^2.1.0",
-    "sequelize": "^5.21.11",
-    "yup": "^0.29.1"
-  },
   "devDependencies": {
-    "aws-sdk": "^2.686.0",
     "concurrently": "^5.2.0",
     "jest": "^26.0.1",
     "sequelize-cli": "^5.5.1",
