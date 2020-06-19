@@ -10,7 +10,7 @@ module.exports.handle = async (event) => {
 
     //Define a schema to validate request body
     const schema = yup.object().shape({
-      username: yup.string().required(),
+      username: yup.string().required().email(),
       password: yup.string().required(),
       access_group_id: yup.string().required(),
     });

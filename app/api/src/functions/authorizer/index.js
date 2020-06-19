@@ -4,12 +4,14 @@ exports.handle = function (event, context, callback) {
   const prefix = "Bearer ";
   const auth = event.authorizationToken;
   const token = auth.substr(0, prefix.length) === prefix ? auth.substr(prefix.length, auth.length) : auth
+
   try {
     //Check if user token is valid
     const user = jwt.verify(token, process.env.JWT_SECRET);
     //validate acl roles to user access specific functions
-    if(event.methodArn == "some_value_here" && !user.acl.includes("1")){
-      throw ("This user has no permission to access this function")
+    if(event.methodArn.endsWith("/POST/user") && !user.acl.includes("1")){
+      //This user must to have code 1 = "User manager" to access this route
+      throw new Error("This user has no permission to access this function")
     }
     //Allow next function    
     callback(null, generatePolicy("user", "Allow", event.methodArn, user));
