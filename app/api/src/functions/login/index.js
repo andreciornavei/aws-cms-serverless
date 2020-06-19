@@ -2,7 +2,7 @@
 
 const { User } = require("./../../models");
 
-module.exports.handler = async (event) => {
+module.exports.handle = async (event) => {
   try {
     //Parse the content body of the request to get user inputs
     const body = JSON.parse(event.body);
@@ -36,7 +36,6 @@ module.exports.handler = async (event) => {
         statusCode: 401,
         body: JSON.stringify({
           message: "username or password invalid",
-          token: null,
         }),
       };
     }
