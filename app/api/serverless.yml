@@ -47,6 +47,16 @@ functions:
           path: /user
           method: post
           authorizer: authorizer
+  create_post:
+    role: ${ssm:${self:custom.stage}-create-post-iam-role}
+    handler: src/functions/cms/create_post/index.handle
+    environment:
+      SQS_CREATE_POST_URL: ${ssm:${self:custom.stage}-sqs-create-post-url}
+    events:
+      - http:
+          path: /cms/posts
+          method: post
+          authorizer: authorizer
   # delete_post:
   #   handler: src/app/functions/posts/destroy.handle
   #   events:
