@@ -26,7 +26,7 @@ module.exports.handle = async (event) => {
       subtitle: body.subtitle,
       content: body.content,
       img_url: body.img_url || "",
-      author: event.requestContext.authorizer,
+      author: event.requestContext.authorizer.username,
     };
 
     await SQS.sendMessage({

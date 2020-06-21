@@ -15,7 +15,7 @@ module.exports.handle = async (event) => {
         title: message.title,
         subtitle: message.subtitle,
         content: message.content,
-        author: message.author.username,
+        author: message.author,
         img_url: message.img_url || "",
       }, { transaction: trx });
     }

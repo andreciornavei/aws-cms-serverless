@@ -57,6 +57,19 @@ functions:
           path: /cms/posts
           method: post
           authorizer: authorizer
+  # delete_post:
+  #   handler: src/functions/cms/delete_post/destroy.handle
+  #   role: ${ssm:${self:custom.stage}-delete-post-iam-role}
+  #   environment:
+  #     DB_HOST: ${ssm:${self:custom.stage}-rds-db-instance-host}
+  #     DB_NAME: ${ssm:${self:custom.stage}-rds-db-instance-name}
+  #     DB_USER: ${ssm:${self:custom.stage}-rds-db-instance-user}
+  #     DB_PASS: ${ssm:${self:custom.stage}-rds-db-instance-pass}
+  #   events:
+  #     - http:
+  #         path: /cms/posts
+  #         method: delete
+  #         authorizer: authorizer
   commit_post:
     handler: src/functions/cms/commit_post.handle
     role: ${ssm:${self:custom.stage}-commit-post-iam-role}
@@ -80,19 +93,18 @@ functions:
       - http:
           path: /cms/all_posts
           method: get
-  # delete_post:
-  #   handler: src/app/functions/posts/destroy.handle
-  #   events:
-  #     - http:
-  #         path: /cms/posts
-  #         method: delete
-  #         authorizer: defaultAuthorizer
-  # get_post:
-  #   handler: src/app/functions/posts/show.handle
-  #   events:
-  #     - http:
-  #         path: /cms/posts
-  #         method: get
+  get_post:
+    handler: src/functions/cms/get_post/index.handle
+    role: ${ssm:${self:custom.stage}-get-post-iam-role}
+    environment:
+      DB_HOST: ${ssm:${self:custom.stage}-rds-db-instance-host}
+      DB_NAME: ${ssm:${self:custom.stage}-rds-db-instance-name}
+      DB_USER: ${ssm:${self:custom.stage}-rds-db-instance-user}
+      DB_PASS: ${ssm:${self:custom.stage}-rds-db-instance-pass}
+    events:
+      - http:
+          path: /cms/posts
+          method: get  
   # update_post:
   #   handler: src/app/functions/posts/update.handle
   #   events:

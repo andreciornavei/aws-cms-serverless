@@ -1,6 +1,6 @@
 "use strict";
 
-const { sequelize, Post } = require("./../../../models");
+const { Post } = require("./../../../models");
 
 module.exports.handle = async () => {
   try {
