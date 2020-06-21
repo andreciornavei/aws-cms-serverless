@@ -1,6 +1,7 @@
 "use strict";
 
 const { Post } = require("./../../../models");
+const Exception = require("./../../../utils/exception");
 
 module.exports.handle = async (event) => {
   try {
@@ -20,14 +21,8 @@ module.exports.handle = async (event) => {
       body: JSON.stringify(post),
     };
   } catch (error) {
-    //if happen some error, print it on cloudwatch to debug
-    console.log(error);
-    //return error message to client
-    return {
-      statusCode: 500,
-      body: JSON.stringify({
-        message: "We had some problems with this request :-(",
-      }),
-    };
+    //Execute Exception function to return 
+    //the apropriated error message
+    return Exception(error);
   }
 };

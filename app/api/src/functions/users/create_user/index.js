@@ -1,7 +1,7 @@
 "use strict";
 
 const yup = require("yup");
-const sequelize = require("sequelize")
+const Exception = require("./../../../utils/exception");
 const { User } = require("./../../../models");
 
 module.exports.handle = async (event) => {
@@ -34,30 +34,8 @@ module.exports.handle = async (event) => {
       body: JSON.stringify(user.dataValues),
     };
   } catch (error) {
-    if (error instanceof yup.ValidationError) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({
-          message: "Check the provided input values",
-          errors: error.errors,
-        }),
-      };
-    } else if(error instanceof sequelize.ValidationError){
-      return {
-        statusCode: 400,
-        body: JSON.stringify({
-          message: "Check the provided input values",
-          errors: error.errors.map(item => item.message),
-        }),
-      };
-    } else {
-      console.log(error);
-      return {
-        statusCode: 500,
-        body: JSON.stringify({
-          message: "We had some problems with this request :-(",
-        }),
-      };
-    }
+    //Execute Exception function to return
+    //the apropriated error message
+    return Exception(error);
   }
 };

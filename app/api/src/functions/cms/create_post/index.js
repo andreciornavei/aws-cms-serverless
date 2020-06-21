@@ -2,6 +2,8 @@
 
 const yup = require("yup");
 const AWS = require("aws-sdk");
+const Exception = require("./../../../utils/exception");
+
 AWS.config.update({ region: process.env.AWS_REGION, });
 const SQS = new AWS.SQS({ apiVersion: "2012-11-05" });
 
@@ -42,22 +44,8 @@ module.exports.handle = async (event) => {
     };
 
   } catch (error) {
-    if (error instanceof yup.ValidationError) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({
-          message: "Check the provided input values",
-          errors: error.errors,
-        }),
-      };
-    } else {
-      console.log(error);
-      return {
-        statusCode: 500,
-        body: JSON.stringify({
-          message: "We had some problems with this request :-(",
-        }),
-      };
-    }
+    //Execute Exception function to return
+    //the apropriated error message
+    return Exception(error);
   }
 };

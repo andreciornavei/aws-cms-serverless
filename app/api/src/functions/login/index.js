@@ -1,6 +1,8 @@
 "use strict";
 
 const { User } = require("./../../models");
+const Exception = require("./../../utils/exception");
+const ApiError = require("./../../utils/api_error");
 
 module.exports.handle = async (event) => {
   try {
@@ -13,12 +15,10 @@ module.exports.handle = async (event) => {
       !body.hasOwnProperty("username") ||
       !body.hasOwnProperty("password")
     ) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({
-          message: `You must provide username and password credentials`,
-        }),
-      };
+      throw new ApiError(
+        400,
+        `You must provide username and password credentials`
+      );
     }
 
     //Abstract username and password from the body
@@ -32,12 +32,7 @@ module.exports.handle = async (event) => {
     //Check if user is undefined or password is correct
     //If true, return authorization failed
     if (!user || !(await user.checkPassword(password))) {
-      return {
-        statusCode: 401,
-        body: JSON.stringify({
-          message: "username or password invalid",
-        }),
-      };
+      throw new ApiError(401, `username or password invalid`);
     }
 
     //If code got here, the provided user is authentic
@@ -48,14 +43,9 @@ module.exports.handle = async (event) => {
         jwt: user.generateToken(),
       }),
     };
-
   } catch (error) {
-    console.log(error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({
-        message: "We had some problems with this request :-(",
-      }),
-    };
+    //Execute Exception function to return
+    //the apropriated error message
+    return Exception(error);
   }
 };
