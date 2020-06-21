@@ -6,15 +6,15 @@ provider:
   region: us-east-1
   state: dev
 
-# plugins:
-#   - serverless-offline
+plugins:
+  - serverless-offline
 
 custom:
   stage: ${opt:stage, self:provider.stage}
-  # serverless-offline:
-  #   printOutput: false
-  #   host: localhost
-  #   httpPort: 4000
+  serverless-offline:
+    printOutput: false
+    host: localhost
+    httpPort: 4000
 
 functions:
   authorizer:
