@@ -15,3 +15,9 @@ resource "aws_ssm_parameter" "sqs_create_post_url" {
     type    = "String"
     value   = aws_sqs_queue.sqs_crete_post.id
 }
+
+resource "aws_ssm_parameter" "sqs_create_post_arn" {
+    name    = "${var.environment}-sqs-create-post-arn"
+    type    = "String"
+    value   = aws_sqs_queue.sqs_crete_post.arn
+}

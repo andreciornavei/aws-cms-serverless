@@ -22,8 +22,8 @@ functions:
     environment:
       JWT_SECRET: ${ssm:${self:custom.stage}-jwt-secret}
   login:
-    role: ${ssm:${self:custom.stage}-login-iam-role}
     handler: src/functions/login/index.handle
+    role: ${ssm:${self:custom.stage}-login-iam-role}
     environment:
       JWT_SECRET: ${ssm:${self:custom.stage}-jwt-secret}
       DB_HOST: ${ssm:${self:custom.stage}-rds-db-instance-host}
@@ -35,8 +35,8 @@ functions:
           path: /login
           method: post
   create_user:
-    role: ${ssm:${self:custom.stage}-create-user-iam-role}
     handler: src/functions/users/create_user/index.handle
+    role: ${ssm:${self:custom.stage}-create-user-iam-role}
     environment:
       DB_HOST: ${ssm:${self:custom.stage}-rds-db-instance-host}
       DB_NAME: ${ssm:${self:custom.stage}-rds-db-instance-name}
@@ -48,8 +48,8 @@ functions:
           method: post
           authorizer: authorizer
   create_post:
-    role: ${ssm:${self:custom.stage}-create-post-iam-role}
     handler: src/functions/cms/create_post/index.handle
+    role: ${ssm:${self:custom.stage}-create-post-iam-role}
     environment:
       SQS_CREATE_POST_URL: ${ssm:${self:custom.stage}-sqs-create-post-url}
     events:
@@ -57,6 +57,17 @@ functions:
           path: /cms/posts
           method: post
           authorizer: authorizer
+  commit_post:
+    handler: src/functions/cms/commit_post.handle
+    role: ${ssm:${self:custom.stage}-commit-post-iam-role}
+    environment:
+      DB_HOST: ${ssm:${self:custom.stage}-rds-db-instance-host}
+      DB_NAME: ${ssm:${self:custom.stage}-rds-db-instance-name}
+      DB_USER: ${ssm:${self:custom.stage}-rds-db-instance-user}
+      DB_PASS: ${ssm:${self:custom.stage}-rds-db-instance-pass}
+    events:
+      - sqs:
+          arn: ${ssm:${self:custom.stage}-sqs-create-post-arn}
   # delete_post:
   #   handler: src/app/functions/posts/destroy.handle
   #   events:
@@ -82,13 +93,6 @@ functions:
   #     - http:
   #         path: /cms/posts
   #         method: put
-  #         authorizer: defaultAuthorizer
-  # create_post:
-  #   handler: src/app/functions/posts/store.handle
-  #   events:
-  #     - http:
-  #         path: /cms/posts
-  #         method: post
   #         authorizer: defaultAuthorizer
   # sqs_create_post:
   #   handler: src/app/functions/sqs/post.handle

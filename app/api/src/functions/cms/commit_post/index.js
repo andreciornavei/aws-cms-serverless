@@ -1,43 +1,38 @@
 "use strict";
 
-const sqs = require('../../utils/sqs')
-const { Post } = require("../../models");
+const { sequelize, Post } = require("./../../../models");
 
-module.exports.handle = async () => {
-  const result = sqs.receiveMessage({
-    QueueUrl: process.env.SQS_URL,
-  });
-
-  if (!result || !result.Messages || results.Messages.length == 0) {
+module.exports.handle = async (event) => {
+  //Open sequelize transaction to execute all sqs messegen at once
+  const trx = await sequelize.transaction();
+  try {
+    //Iterate all sqs messeages
+    for (const record of event.Records) {
+      //Parse the sqs message to JSON object
+      const message = JSON.parse(record.body);
+      //Create the post as a transaction (in memory)
+      await Post.create({
+        title: message.title,
+        subtitle: message.subtitle,
+        content: message.content,
+        author: message.author.username,
+        img_url: message.img_url || "",
+      }, { transaction: trx });
+    }
+    //If everything is ok, commit all creations
+    await trx.commit();
+    //Return 2xx to SQS remove messages from queue
+    return {
+      statusCode: 200,
+    }
+  } catch (error) {
+    //Dispose error on watchlogs
+    console.log(error);
+    //Cancell all post created until the error moment
+    await trx.rollback();
+    //Return 5xx to SQS give back the message to queue
     return {
       statusCode: 500,
-      body: JSON.stringify({
-        message: "No messages to proccess",
-      }),
     };
-  } else {
-    const body = JSON.parse(results.Messages[0].Body);
-
-    const post = await Post.create({
-      title: body.title,
-      subtitle: body.subtitle,
-      content: body.content,
-      author: body.author,
-      img_url: body.img_url || "",
-    });
-
-    if (!post) {
-      return {
-        statusCode: 500,
-        body: JSON.stringify({
-          message: "Was not possible to create a new post",
-        }),
-      };
-    } else {
-      return {
-        statusCode: 200,
-        body: JSON.stringify(post),
-      };
-    }
   }
 };

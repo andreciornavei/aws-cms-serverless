@@ -21,4 +21,7 @@ module "users" {
 module "cms" {
     source          = "../../infra/cms"
     environment     = var.environment
+    region            = var.region
+    account_id        = data.aws_caller_identity.current.account_id
+    db_instance_key   = var.db_instance_key
 }
