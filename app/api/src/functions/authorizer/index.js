@@ -21,6 +21,9 @@ exports.handle = function (event, context, callback) {
         event.methodArn.endsWith("/POST/cms/posts") &&
         !user.acl.includes("2") &&
         !user.acl.includes("3")
+      ) || (
+        event.methodArn.endsWith("/DELETE/cms/posts") &&
+        !user.acl.includes("2")
       )
     ) {
       //This user must to have the appropriated code to access the route

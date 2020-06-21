@@ -1,45 +1,39 @@
 "use strict";
 
-const jwt = require("./../../utils/jwt");
-const { Post } = require("./../../models");
+const { Post } = require("./../../../models");
+const Exception = require("./../../../utils/exception");
+const ApiError = require("./../../../utils/api_error");
 
-module.exports.handler = async (event) => {
-  //check permission with ID 2 for "Content Manger"
-  const payload = await jwt(event);
-  if (!payload.acl.includes("2")) {
+module.exports.handle = async (event) => {
+  try {
+    
+    //parse body to access object data
+    const body = JSON.parse(event.body);
+    
+    //find the post by body.id
+    const post = await Post.findOne({ where: { id: body.id, deleted: false } });
+    
+    //Return a error if post does not exists
+    if (!post) {
+      throw new ApiError(
+        404,
+        "Post not found"
+      )
+    }
+
+    //Mark post as deleted if it exists
+    post.deleted = true;
+    await post.save();
+
+    //return success message
     return {
-      statusCode: 500,
-      body: JSON.stringify({
-        message: "You have no user permission to manage this post resource",
-      }),
-    };
+      statusCode: 200,
+      body: JSON.stringify({message: "Post deleted"})
+    }
+    
+  } catch (error) {
+    //Execute Exception function to return 
+    //the apropriated error message
+    return Exception(error);
   }
-
-  const body = JSON.parse(event.body);
-
-  const postId = (body && body.id) || undefined;
-  if (!postId) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({
-        message: `The request must provide a 'id' parameter to delete post resources`,
-      }),
-    };
-  }
-
-  const post = await Post.findOne({ where: { id: body.id, deleted: false } });
-  if (!post) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({
-        message: `The post with id ${body.id} was not found`,
-      }),
-    };
-  }
-  post.deleted = true;
-  await post.save();
-
-  return {
-    statusCode: 200,
-  };
 };
