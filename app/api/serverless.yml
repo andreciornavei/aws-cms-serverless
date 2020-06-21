@@ -57,6 +57,19 @@ functions:
           path: /cms/posts
           method: post
           authorizer: authorizer
+  update_post:
+    handler: src/functions/cms/update_post/index.handle
+    role: ${ssm:${self:custom.stage}-update-post-iam-role}
+    environment:
+      DB_HOST: ${ssm:${self:custom.stage}-rds-db-instance-host}
+      DB_NAME: ${ssm:${self:custom.stage}-rds-db-instance-name}
+      DB_USER: ${ssm:${self:custom.stage}-rds-db-instance-user}
+      DB_PASS: ${ssm:${self:custom.stage}-rds-db-instance-pass}
+    events:
+      - http:
+          path: /cms/posts
+          method: put
+          authorizer: authorizer
   delete_post:
     handler: src/functions/cms/delete_post/index.handle
     role: ${ssm:${self:custom.stage}-delete-post-iam-role}
@@ -105,10 +118,3 @@ functions:
       - http:
           path: /cms/posts
           method: get  
-  # update_post:
-  #   handler: src/app/functions/posts/update.handle
-  #   events:
-  #     - http:
-  #         path: /cms/posts
-  #         method: put
-  #         authorizer: defaultAuthorizer

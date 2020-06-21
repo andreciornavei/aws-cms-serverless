@@ -22,6 +22,10 @@ exports.handle = function (event, context, callback) {
         !user.acl.includes("2") &&
         !user.acl.includes("3")
       ) || (
+        event.methodArn.endsWith("/PUT/cms/posts") &&
+        !user.acl.includes("2") &&
+        !user.acl.includes("3")
+      ) || (
         event.methodArn.endsWith("/DELETE/cms/posts") &&
         !user.acl.includes("2")
       )
