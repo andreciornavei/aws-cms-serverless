@@ -68,6 +68,18 @@ functions:
     events:
       - sqs:
           arn: ${ssm:${self:custom.stage}-sqs-create-post-arn}
+  all_posts:
+    handler: src/functions/cms/all_posts/index.handle
+    role: ${ssm:${self:custom.stage}-all-posts-iam-role}
+    environment:
+      DB_HOST: ${ssm:${self:custom.stage}-rds-db-instance-host}
+      DB_NAME: ${ssm:${self:custom.stage}-rds-db-instance-name}
+      DB_USER: ${ssm:${self:custom.stage}-rds-db-instance-user}
+      DB_PASS: ${ssm:${self:custom.stage}-rds-db-instance-pass}
+    events:
+      - http:
+          path: /cms/all_posts
+          method: get
   # delete_post:
   #   handler: src/app/functions/posts/destroy.handle
   #   events:
@@ -75,12 +87,6 @@ functions:
   #         path: /cms/posts
   #         method: delete
   #         authorizer: defaultAuthorizer
-  # list_post:
-  #   handler: src/app/functions/posts/index.handle
-  #   events:
-  #     - http:
-  #         path: /cms/all_posts
-  #         method: get
   # get_post:
   #   handler: src/app/functions/posts/show.handle
   #   events:
@@ -94,8 +100,3 @@ functions:
   #         path: /cms/posts
   #         method: put
   #         authorizer: defaultAuthorizer
-  # sqs_create_post:
-  #   handler: src/app/functions/sqs/post.handle
-  #   events:
-  #     - sqs:
-  #         arn: arn:aws:sqs:sa-east-1:750813453023:aws-cms-serverless-queue
