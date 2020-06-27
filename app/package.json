@@ -3,9 +3,14 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "dev": "concurrently \"NODE_ENV=dev serverless offline start\" \"wait-on http://localhost:4000/dev && NODE_ENV=dev sequelize db:create && NODE_ENV=dev sequelize db:migrate:undo:all && NODE_ENV=dev sequelize db:migrate && NODE_ENV=dev sequelize db:seed:all\""
+  },
   "devDependencies": {
     "aws-sdk": "^2.699.0",
-    "serverless-offline": "^6.4.0"
+    "concurrently": "^5.2.0",
+    "serverless-offline": "^6.4.0",
+    "wait-on": "^5.0.1"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

@@ -16,7 +16,7 @@ This document is intended to guide you step by step to deploy this serverless ap
 
 ## The project application
 
-This project contains a basic approach of using some AWS resources like `API Gateway`, `Lambda Functions`, `RDS`, and `SQS`. 
+This project contains a basic approach of using some AWS resources like `API Gateway`, `Lambda Functions`, `RDS`, and `SQS`.
 
 The application consists in a basic CMS (Content Management System) with a default user admin who can create new users with access permissions. The users can create, update and delete cms posts according with itself permissions. List and Get posts has public access for internet.
 
@@ -26,7 +26,7 @@ Below you can see the diagram about how the architecture of the solution must to
 
 ![](./_workspace/diagram.png)
 
---- 
+---
 
 ## 1 - Setup your environment
 
@@ -46,7 +46,7 @@ For more documentation about npm, see [this link](https://www.npmjs.com/get-npm.
 
 ### 1.3 - Setup NPX
 
-To make simple the execution of all binary libraries in this project like `serverless` and `sequelize`, just install the library below as global, this will take care about de cli executions. 
+To make simple the execution of all binary libraries in this project like `serverless` and `sequelize`, just install the library below as global, this will take care about de cli executions.
 
 ```bash
 $ npm install -g npx
@@ -64,8 +64,8 @@ For more documentation about IAM creation, see [this link](https://docs.aws.amaz
 
 Now, this project uses shared credentials file to get access of your IAM credentials. Where you keep the shared credentials file depends on your operating system:
 
-* The shared credentials file on Linux, Unix, and macOS: `~/.aws/credentials`
-* The shared credentials file on Windows: `C:\Users\USER_NAME\.aws\credentials`
+- The shared credentials file on Linux, Unix, and macOS: `~/.aws/credentials`
+- The shared credentials file on Windows: `C:\Users\USER_NAME\.aws\credentials`
 
 _So, after generate your credential file, put it inside your aws shared credentials file_
 
@@ -129,30 +129,32 @@ _`~/.keys` should be the local where your key are placed and `aws-cms-serverless
 
 If you are not a partner, so probably you not have the key. In this case, copy the template below and override the encrypted files, then replace the content with your own informations:
 
-
 _for file: `./terraform/environments/dev/secrets.auto.tfvars`:_
+
 ```tfvars
 jwt_secret  = "your-own-data" #base64 key with 32 bytes
 db_name     = "your-own-data"
 db_user     = "your-own-data"
 db_pass     = "your-own-data"
 ```
+
 To generate a random base64 key use: https://generate.plus/en/base64
 
 _for file: `./database/src/config/database.secret.js`:_
+
 ```js
 module.exports = {
   host: "<your-rds-instance-endpoint>",
   username: "<your-rds-instance-database-username>",
   password: "<your-rds-instance-database-password>",
   database: "<your-rds-instance-database-name>",
-  dialect: "mysql", 
+  dialect: "mysql",
   logging: false,
   define: {
     timestamps: true,
     underscored: true,
     underscoredAll: true,
-  }
+  },
 };
 ```
 
@@ -190,7 +192,7 @@ _if everything occurred ok, now you have the infrastructure online in your aws a
 
 Now, we should have the RDS online, so we can run sequelize commands to initialize our database and records on server.
 
-__Before run the next commands, just follow one more step:__
+**Before run the next commands, just follow one more step:**
 
 _Run terraform command below to get generated variables when terrafor was deployed:_
 
@@ -200,7 +202,7 @@ $ terraform show
 
 Now copy `aws_rds_cluster_instance.cluster_instances.endpoint` variable to `DB_HOST` parameter on `.env` file for node.js access it and have access to correct resources at `aws`.
 
-__also__
+**also**
 
 copy `aws_sqs_queue.aws-cms-serverless-queue.id` variable to `SQS_URL` parameter on `.env` file for node.js access it and have access to correct resources at `aws`.
 
@@ -244,19 +246,9 @@ _With it, all the source code that will represents our API will be online to be 
 
 ## 4 - Testing
 
-### 4.1 - Invoke your functions locally
+### 4.1 - Testing with `Jest`
 
-For test your lambda functions without an endpoint API, you can invoke it functions using `serverless invoke local`, like code below where `status` is yours function name:
-
-```bash
-$ npx serverless invoke local -f status
-```
-
----
-
-### 4.2 - Testing with jest
-
-For test all routes and be safe about new changes, I prepared a  script on `package.json` scripts to join `serverless-offline` and `jest` locally. Run the command below to test it yourself. 
+For test all routes and be safe about new changes, I prepared a script on `package.json` scripts to join `serverless-offline` and `jest` locally. Run the command below to test it yourself.
 
 ```bash
 $ npm run test
@@ -264,23 +256,13 @@ $ npm run test
 
 ---
 
-### 4.3 - `serverless OFFLINE` with `Postman`
+### 4.2 - Testing with `Postman`
 
-For this section we going to test the serverless lambda functions offline as a endpoint API, it should be a good pratice to test the project manually during development. I prepared a script at `package.json` scripts to deploy a local server and test it during development joined with postman, so run the command below to start the serverless offline if you want:
+For this section we going to test the serverless lambda functions as a endpoint API, it should be a good pratice to test the project manually during development. In this approach we have to make sure to deploy all of our infrastructure with `terraform` and `serverless` to work.
 
-```bash
-$ npm run dev
-```
+_this project has two files exporteds from `postman`: [postman.environment.json](_workspace/postman.environment.json) and [postman.collection.json](_workspace/postman.collection.json), so you just need to import it to your `postman`_.
 
-_this project has two files exporteds from `postman`: [postman_environment.json](postman_environment.json) and [postman_collection.json](postman_collection.json), so you just need to import it to your `postman` and test the application_.
-
-_For develpment tests, make sure that the variable `baseurl` is setted to http://localhost:4000_
-
----
-
-### 4.4 - `serverless ONLINE` with `Postman`
-
-In the end, the tests before was made in local machine and not was used the infrastructure deployed by terraform and serverless to work. Now to test all the service online is simple, you just need to change the `baseurl` variable on `Postman` to the serverless baseurl genereted when deployed.  
+Now to test all the service online is simple, you just need to change the `baseurl` variable on `Postman` to the serverless baseurl genereted when deployed:
 
 _Run the command bellow to see the endpoint at `endpoints` records:_
 
@@ -294,8 +276,7 @@ _After that you will be able to test all deployed lambda resources online._
 
 ---
 
-
-## _🎉  Congradulations, You're done._
+## _🎉 Congradulations, You're done._
 
 I hope this documentation is clear and helps you understand how to configure a serverless application with terraform.
 

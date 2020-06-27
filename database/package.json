@@ -13,6 +13,8 @@
     "start": "sequelize db:create && sequelize db:migrate && sequelize db:seed:all",
     "create": "sequelize db:create",
     "migrate": "sequelize db:migrate",
-    "seed": "sequelize db:seed:undo:all && sequelize db:seed:all"
+    "seed": "sequelize db:seed:undo:all && sequelize db:seed:all",
+    "start_test": "NODE_ENV=test sequelize db:migrate:undo:all && NODE_ENV=test sequelize db:migrate && NODE_ENV=test sequelize db:seed:all",
+    "end_test": "NODE_ENV=test sequelize db:migrate:undo:all"
   }
 }
